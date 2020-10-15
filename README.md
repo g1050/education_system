@@ -15,6 +15,7 @@
 > 该教务系统是javaee,课内实验，前端采用layui组件库，后端采用Java语言SSM框架。
 # 安装
 ```
-git clone ...
+git clone https://github.com/g1050/education_system.git
 ```
-#　运行
+# 运行
+
