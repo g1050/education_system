@@ -1,0 +1,47 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 1000,
+    "data": [
+        {
+            "id": 101001,
+            "name": "自律委员会",
+            "director": "陈飞",
+            "college": "计算机学院",
+            "email": "1705230402@qq.com",
+            "description": "描述",
+            "student_num": "165",
+            "phone": "153326981569"
+        },
+        {
+            "id": 101001,
+            "name": "自律委员会",
+            "director": "陈飞",
+            "college": "计算机学院",
+            "email": "1705230402@qq.com",
+            "description": "描述",
+            "student_num": "165",
+            "phone": "153326981569"
+        },
+        {
+            "id": 101001,
+            "name": "自律委员会",
+            "director": "陈飞",
+            "college": "计算机学院",
+            "email": "1705230402@qq.com",
+            "description": "描述",
+            "student_num": "165",
+            "phone": "153326981569"
+        },
+        {
+            "id": 101001,
+            "name": "自律委员会",
+            "director": "陈飞",
+            "college": "计算机学院",
+            "email": "1705230402@qq.com",
+            "description": "描述",
+            "student_num": "165",
+            "phone": "153326981569"
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/welcome-1.html?t=1"
+  },
+  "logoInfo": {
+    "title": "幻萌教务",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "管理员管理",
+          "href": "page/page-main/main-admin.html",
+          "icon": "fa fa-paw",
+          "target": "_self"
+        },
+        {
+          "title": "机构管理",
+          "href": "",
+          "icon": "fa fa-home",
+          "target": "_self",
+          "child": [
+            {
+              "title": "学院管理",
+              "href": "page/page-main/main-college.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "班级管理",
+              "href": "page/page-main/main-class.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "社团管理",
+              "href": "page/page-main/main-club.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            { 
+              "title": "宿舍管理",
+              "href": "page/page-main/main-domn.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-user",
+          "target": "_self",
+          "child": [
+            {
+              "title": "学生管理",
+              "href": "page/page-main/main-student.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "教师管理",
+              "href": "page/page-main/main-teacher.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "教学管理",
+          "href": "",
+          "icon": "fa fa-book",
+          "target": "_self",
+          "child": [
+            {
+              "title": "课程管理",
+              "href": "page/page-main/main-sourse.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            },
+            {
+              "title": "专业管理",
+              "href": "page/page-main/main-major.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

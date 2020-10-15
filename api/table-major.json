@@ -1,0 +1,42 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 1000,
+    "data": [
+      {
+        "id": 1001,
+        "name": "软件工程",
+        "college":"计算机学院",
+        "number":"200",
+        "director": "王一博"
+      },
+      {
+        "id": 1002,
+        "name": "计算机科学与技术",
+        "college":"计算机学院",
+        "number":"220",
+        "director": "肖战"
+      },
+      {
+        "id": 1003,
+        "name": "通信工程",
+        "college":"通信学院",
+        "number":"180",
+        "director": "熊二"
+      },
+      {
+        "id": 1004,
+        "name": "数学",
+        "college":"理学院",
+        "number":"200",
+        "director": "光头强"
+      },
+      {
+        "id": 1005,
+        "name": "日语",
+        "college":"外国语学院",
+        "number":"230",
+        "director": "喜羊羊"
+      }
+    ]
+  }

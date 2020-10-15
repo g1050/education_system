@@ -1,0 +1,47 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 100,
+  "data": [
+    {
+      "id": 100001,
+      "name":"软件1804",
+      "major": "软件工程",
+      "student_num":"33",
+      "party_secretary":"孟XX",
+      "director": "赵班长"
+    },
+    {
+      "id": 100001,
+      "name":"软件1804",
+      "major": "软件工程",
+      "student_num":"33",
+      "party_secretary":"孟XX",
+      "director": "赵班长"
+    },
+    {
+      "id": 100001,
+      "name":"软件1804",
+      "major": "软件工程",
+      "student_num":"33",
+      "party_secretary":"孟XX",
+      "director": "赵班长"
+    },
+    {
+      "id": 100001,
+      "name":"软件1804",
+      "major": "软件工程",
+      "student_num":"33",
+      "party_secretary":"孟XX",
+      "director": "赵班长"
+    },
+    {
+      "id": 100001,
+      "name":"软件1804",
+      "major": "软件工程",
+      "student_num":"33",
+      "party_secretary":"孟XX",
+      "director": "赵班长"
+    }
+  ]
+}

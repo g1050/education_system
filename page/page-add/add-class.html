@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
+    <style>
+        /* .layui-form input {
+            width: 356px;
+        } */
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+
+
+<body>
+
+    <div class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">班级名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="名称不能为空" placeholder="请输入班级名称"
+                    value="" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">专业</label>
+            <div class="layui-form toolbar"></div>
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <select name="major" lay-filter="parentCategory" id="major">
+                        <option value="长安区东区">软件工程</option>
+                        <option value="长安区西区">计算机科学与技术</option>
+                        <option value="雁塔区">大数据</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">学生人数</label>
+        <div class="layui-input-block">
+            <input type="number" name="student_num" id="student_num" lay-verify="number" placeholder="请输入学生人数" value=""
+                class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">班长</label>
+        <div class="layui-input-block">
+            <input type="number" name="director" id="director" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
+                class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">团支书</label>
+        <div class="layui-input-block">
+            <input type="name" name="party_secretary" id="party_secretary" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
+                value="" class="layui-input">
+        </div>
+    </div>
+
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+
+
+
+
+    </div>
+
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+
+    <script>
+
+        layui.use(['layer', 'form', 'jquery', 'upload', 'laydate'], function () {
+            let layer = layui.layer;
+            let form = layui.form;
+            let upload = layui.upload;
+            let laydate = layui.laydate;
+            let layarea = layui.layarea;
+            let $ = layui.jquery;
+
+            //监听提交
+            form.on('submit(saveBtn)', function (data) {
+                var index = layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                }, function () {
+
+                    // 关闭弹出层
+                    layer.close(index);
+
+                    var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    parent.layer.close(iframeIndex);
+
+                });
+
+                return false;
+            });
+
+            let myFile;
+            upload.render({
+                elem: '#test1'
+                , saveW: 150     //保存宽度
+                , saveH: 150   //保存高度
+                , mark: 1 / 1    //选取比例
+                , area: '900px'  //弹窗宽度
+                , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+                , done: function (data) { //上传完毕回调
+                    if (data.code == 1) {
+                        $('#demo1').attr('src', data.url);
+                        $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
+                    } else {
+                        return layer.msg('上传失败');
+                    }
+                    /* $("#inputimgurl").val(url);
+                     $("#srcimgurl").attr('src',url);*/
+                }
+            });
+        });
+
+    </script>
+</body>
+
+</html>
