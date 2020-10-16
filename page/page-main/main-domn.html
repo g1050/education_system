@@ -13,43 +13,6 @@
 <div class="layuimini-container">
     <div class="layuimini-main">
 
-        <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">管理员姓名</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="username" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">管理员性别</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="sex" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label"style="width: 180px">管理员所属学院</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="city" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">管理员昵称</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classify" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </fieldset>
-
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
@@ -85,12 +48,12 @@
             cols: [[
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 90, title: 'ID', sort: true},
-                {field: 'name', width: 90, title: '姓名'},
-                {field: 'username', width: 180, title: '手机号'},
-                {field: 'display_name', width: 180, title: '昵称'},
-                {field: 'sex', width: 90, title: '性别', sort: true},
-                {field: 'college', width: 160, title: '所属学院'},
-                {field: 'email', width: 180, title: '邮箱'},
+                {field: 'name', width: 90, title: '宿舍名字'},
+                {field: 'building', width: 180, title: '楼栋'},
+                {field: 'room', width: 180, title: '房间号', sort: true},
+                {field: 'number', width: 90, title: '人数', sort: true},
+                {field: 'director', width: 160, title: '舍长'},
+                {field: 'member', width: 180, title: '成员'},
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -126,7 +89,7 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
-                    title: '添加管理员',
+                    title: '添加宿舍',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
@@ -154,7 +117,7 @@
             if (obj.event === 'edit') {
 
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: '编辑宿舍',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
