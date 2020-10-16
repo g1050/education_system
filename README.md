@@ -17,5 +17,5 @@
 ```
 git clone https://github.com/g1050/education_system.git
 ```
-# 运行
+# 运行。
 
