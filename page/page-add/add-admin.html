@@ -20,19 +20,19 @@
 </head>
 
 <body>
-    <div class="layui-form layuimini-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label required">姓名</label>
+    <div class="layui-form layuimini-form layui-container">
+        <div class="layui-form-item layui-row">
+            <label class="layui-form-label required" >姓名</label>
             <div class="layui-input-block">
                 <input type="text" name="name" id="name"lay-verify="name" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
-                    value="" class="layui-input">
+                    value="" class="layui-input layui-col-lg6" >
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">昵称</label>
             <div class="layui-input-block">
                 <input type="text" name="display_name" id="display_name"lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名"
-                    value="" class="layui-input">
+                    value="" class="layui-input" >
                 <tip>填写自己管理账号的昵称。</tip>
             </div>
         </div>

@@ -1,0 +1,52 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 100,
+  "data": [
+    {
+      "id": 100001,
+      "name":"计算机学院",
+      "location": "长安区 东区",
+      "major_num":"5",
+      "persident":"史强",
+      "phone": " 029-83380588",
+      "email":"1505526302@qq.com"
+    },
+    {
+      "id": 100001,
+      "name":"电子信息工程学院",
+      "location": "长安区 西区",
+      "major_num":"6",
+      "persident":"史小强",
+      "phone": " 029-83380588",
+      "email":"1505526302@qq.com"
+    },
+    {
+      "id": 100001,
+      "name":"计算机学院",
+      "location": "长安区 西区",
+      "major_num":"5",
+      "persident":"史强",
+      "phone": " 029-83380588",
+      "email":"1505526302@qq.com"
+    },
+    {
+      "id": 100001,
+      "name":"计算机学院",
+      "location": "长安区 西区",
+      "major_num":"5",
+      "persident":"史强",
+      "phone": " 029-83380588",
+      "email":"1505526302@qq.com"
+    },
+    {
+      "id": 100001,
+      "name":"计算机学院",
+      "location": "长安区 西区",
+      "major_num":"5",
+      "persident":"史强",
+      "phone": " 029-83380588",
+      "email":"1505526302@qq.com"
+    }
+  ]
+}
