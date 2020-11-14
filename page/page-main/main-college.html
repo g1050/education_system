@@ -55,16 +55,15 @@
     </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
 <script>
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
-
         table.render({
             elem: '#currentTableId',
-            page: true,
-            url: 'http://localhost:8080/hm/college/retrieve',
+            url: realm_name + '/college',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -73,10 +72,10 @@
             }],
             parseData:function(res){
                 return{
-                    "code": 0,
-                    "msg": "",
-                    "count": res.total,
-                    "data": res.list
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
                 }  
             },
             cols: [[
@@ -91,8 +90,8 @@
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
-            limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limits: [5,10, 15, 20, 25, 50, 100],
+            limit: 10,
             page: true,
             skin: 'line'
         });

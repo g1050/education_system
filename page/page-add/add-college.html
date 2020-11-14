@@ -46,7 +46,7 @@
                 </div>
             </div>
         </div>
-    </div>
+  
 
     <div class="layui-form-item">
         <label class="layui-form-label required">学院热线</label>
@@ -58,18 +58,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">院长</label>
         <div class="layui-input-block">
-            <input type="name" name="persident" lay-verify="name" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
+            <input type="name" name="president" lay-verify="name" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
                 class="layui-input">
         </div>
     </div>
+
     <div class="layui-form-item">
         <label class="layui-form-label">专业数目</label>
         <div class="layui-input-block">
-            <input type="number" name="major_num" lay-reqtext="专业数目不能为空" placeholder="请输入专业数目" value=""
+            <input type="number" name="majorNum" lay-reqtext="专业数目不能为空" placeholder="请输入专业数目" value=""
                 class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+    <!-- <div class="layui-form-item">
         <label class="layui-form-label">学院照片</label>
         <div class="layui-input-block">
             <div class="layui-upload">
@@ -81,13 +82,13 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
+    </div> -->
+    <!-- <div class="layui-form-item">
         <label class="layui-form-label">学院邮箱</label>
         <div class="layui-input-block">
             <input type="email" name="email" id="email"placeholder="请输入邮箱" value="" class="layui-input">
         </div>
-    </div>
+    </div> -->
 
     <div class="layui-form-item">
         <div class="layui-input-block">
@@ -101,53 +102,51 @@
     </div>
 
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-
+    <script src="../../js/config.js"></script>
     <script>
 
-        layui.use(['layer', 'form', 'jquery', 'upload', 'laydate'], function () {
+        layui.use(['layer', 'form', 'jquery'], function () {
             let layer = layui.layer;
             let form = layui.form;
-            let upload = layui.upload;
-            let laydate = layui.laydate;
-            let layarea = layui.layarea;
             let $ = layui.jquery;
+            
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
+                
+
                 var index = layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
+                    title: '提交的学院信息'
                 }, function () {
-
                     // 关闭弹出层
-                    layer.close(index);
+                    
 
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
-
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/college',
+                        method: "POST",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(data.field),
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
+                        
                 });
 
                 return false;
             });
 
-            let myFile;
-            upload.render({
-                elem: '#test1'
-                , saveW: 150     //保存宽度
-                , saveH: 150   //保存高度
-                , mark: 1 / 1    //选取比例
-                , area: '900px'  //弹窗宽度
-                , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-                , done: function (data) { //上传完毕回调
-                    if (data.code == 1) {
-                        $('#demo1').attr('src', data.url);
-                        $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
-                    } else {
-                        return layer.msg('上传失败');
-                    }
-                    /* $("#inputimgurl").val(url);
-                     $("#srcimgurl").attr('src',url);*/
-                }
-            });
         });
 
     </script>
