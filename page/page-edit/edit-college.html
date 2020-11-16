@@ -32,6 +32,7 @@
             <div class="layui-inline">
                 <div class="layui-input-block">
                     <select name="location" lay-filter="parentCategory" id="location">
+                        <option value=""></option>
                         <option value="长安区东区">长安区东区</option>
                         <option value="长安区西区">长安区西区</option>
                         <option value="雁塔区">雁塔区</option>
@@ -39,7 +40,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 
     <div class="layui-form-item">
         <label class="layui-form-label required">学院热线</label>
@@ -51,18 +52,19 @@
     <div class="layui-form-item">
         <label class="layui-form-label required">院长</label>
         <div class="layui-input-block">
-            <input type="name" name="persident" lay-verify="name" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
+            <input id = "president" type="name" name="president" lay-verify="president" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
                 class="layui-input">
         </div>
     </div>
     <div class="layui-form-item">
         <label class="layui-form-label">专业数目</label>
         <div class="layui-input-block">
-            <input type="number" name="major_num" lay-reqtext="专业数目不能为空" placeholder="请输入专业数目" value=""
+            <input id = "majorNum" type="number" name="majorNum" lay-reqtext="专业数目不能为空" placeholder="请输入专业数目" value=""
                 class="layui-input">
         </div>
     </div>
-    <div class="layui-form-item">
+
+    <!-- <div class="layui-form-item">
         <label class="layui-form-label">学院照片</label>
         <div class="layui-input-block">
             <div class="layui-upload">
@@ -74,38 +76,65 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="layui-form-item">
+    </div> -->
+    <!-- <div class="layui-form-item">
         <label class="layui-form-label">学院邮箱</label>
         <div class="layui-input-block">
             <input type="email" name="email" id="email"placeholder="请输入邮箱" value="" class="layui-input">
         </div>
-    </div>
+    </div> -->
     <div class="layui-form-item">
         <div class="layui-input-block">
             <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
         </div>
     </div>
     </div>
-    </div>
+ 
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
     <script>
-        layui.use(['form'], function () {
+        var data = 1;
+        layui.use(['form'], function (obj) {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+                var data = parent.data;
+                // console.log(data);
 
+            $(function(){
+                $("#name").val(data.name);
+                $("#location").val(data.location);
+                $("#phone").val(data.phone);
+                $("#president").val(data.president);
+                $("#majorNum").val(data.majorNum);
+                form.render('select');
+            })
+                
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 }, function () {
-
-                    // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/college',
+                        method: "PUT",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(data.field),
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
 
                 });
 

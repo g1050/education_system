@@ -105,12 +105,15 @@
     <script src="../../js/config.js"></script>
     <script>
 
-        layui.use(['layer', 'form', 'jquery'], function () {
+        layui.use(['layer', 'form', 'jquery'], function (obj,data) {
             let layer = layui.layer;
             let form = layui.form;
             let $ = layui.jquery;
             
-
+            
+            function child(obj){
+                console.log(obj);
+            }
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 
