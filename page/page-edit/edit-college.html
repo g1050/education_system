@@ -19,6 +19,14 @@
 <body>
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
+            <label class="layui-form-label required">学院ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" id="id"lay-verify="name" lay-reqtext="名称不能为空" placeholder="请输入学院名称" value=""
+                    class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label required">学院名称</label>
             <div class="layui-input-block">
                 <input type="text" name="name" id="name"lay-verify="name" lay-reqtext="名称不能为空" placeholder="请输入学院名称" value=""
@@ -91,6 +99,7 @@
     </div>
  
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
         var data = 1;
         layui.use(['form'], function (obj) {
@@ -101,6 +110,7 @@
                 // console.log(data);
 
             $(function(){
+                $("#id").val(data.id);
                 $("#name").val(data.name);
                 $("#location").val(data.location);
                 $("#phone").val(data.phone);
