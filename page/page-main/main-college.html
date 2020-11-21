@@ -44,7 +44,9 @@
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
-
+        
+        <!-- 1.ajax请求获取数据
+        2.渲染在table里  -->
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
@@ -62,6 +64,9 @@
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
+
+        //     <!-- 1.ajax请求获取数据
+        // 2.渲染在table里  -->
         table.render({
             elem: '#currentTableId',
             url: realm_name + '/college',
@@ -71,6 +76,7 @@
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
+
             parseData:function(res){
                 return{
                     "code": res.code,
@@ -79,6 +85,7 @@
                     "data": res.extend.pageInfo.list
                 }  
             },
+
             cols: [[
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 100, title: 'ID', sort: true},
@@ -91,8 +98,10 @@
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
+
             limits: [5,10, 15, 20, 25, 50, 100],
             limit: 10,
+            
             page: true,
             skin: 'line'
         });
