@@ -81,7 +81,7 @@
           "child": [
             {
               "title": "课程管理",
-              "href": "page/page-main/main-sourse.html",
+              "href": "page/page-main/main-course.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
             },

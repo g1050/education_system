@@ -1,0 +1,47 @@
+{
+    "code": 0,
+    "msg": "",
+    "count": 100,
+    "data": [
+      {
+        "id": 100001,
+        "name":"数据结构",
+        "college": "计算机院",
+        "class_hour":"48",
+        "score":"4",
+        "required": "是"
+      },
+      {
+        "id": 100001,
+        "name":"高数",
+        "college": "理学院",
+        "class_hour":"64",
+        "score":"6",
+        "required": "是"
+      },
+      {
+        "id": 100001,
+        "name":"线性代数",
+        "college": "理学院",
+        "class_hour":"48",
+        "score":"2",
+        "required": "是"
+      },
+      {
+        "id": 100001,
+        "name":"人机界面交互",
+        "college": "计算机院",
+        "class_hour":"36",
+        "score":"4",
+        "required": "是"
+      },
+      {
+        "id": 100001,
+        "name":"数据库",
+        "college": "计算机院",
+        "class_hour":"48",
+        "score":"4",
+        "required": "否"
+      }
+    ]
+  }
