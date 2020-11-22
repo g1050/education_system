@@ -1,52 +1,58 @@
 {
-  "code": 0,
-  "msg": "",
-  "count": 100,
-  "data": [
-    {
-      "id": 100001,
-      "name":"计算机学院",
-      "location": "长安区 东区",
-      "major_num":"5",
-      "persident":"史强",
-      "phone": " 029-83380588",
-      "email":"1505526302@qq.com"
-    },
-    {
-      "id": 100001,
-      "name":"电子信息工程学院",
-      "location": "长安区 西区",
-      "major_num":"6",
-      "persident":"史小强",
-      "phone": " 029-83380588",
-      "email":"1505526302@qq.com"
-    },
-    {
-      "id": 100001,
-      "name":"计算机学院",
-      "location": "长安区 西区",
-      "major_num":"5",
-      "persident":"史强",
-      "phone": " 029-83380588",
-      "email":"1505526302@qq.com"
-    },
-    {
-      "id": 100001,
-      "name":"计算机学院",
-      "location": "长安区 西区",
-      "major_num":"5",
-      "persident":"史强",
-      "phone": " 029-83380588",
-      "email":"1505526302@qq.com"
-    },
-    {
-      "id": 100001,
-      "name":"计算机学院",
-      "location": "长安区 西区",
-      "major_num":"5",
-      "persident":"史强",
-      "phone": " 029-83380588",
-      "email":"1505526302@qq.com"
-    }
-  ]
+  "code":0,
+	"pageNum": 1,
+	"pageSize": 5,
+	"size": 5,
+	"startRow": 1,
+	"endRow": 5,
+	"total": 11,
+	"pages": 3,
+	"list": [{
+		"id": 1,
+		"name": "计算机学院",
+		"location": "长安区东区",
+		"majorNum": 4,
+		"president": "X院长",
+		"phone": "15533052683"
+	}, {
+		"id": 2,
+		"name": "计算机学院",
+		"location": "长安区东区",
+		"majorNum": 4,
+		"president": "X院长",
+		"phone": "15533052683"
+	}, {
+		"id": 3,
+		"name": "计算机学院",
+		"location": "长安区东区",
+		"majorNum": 4,
+		"president": "X院长",
+		"phone": "15533052683"
+	}, {
+		"id": 4,
+		"name": "计算机学院",
+		"location": "长安区东区",
+		"majorNum": 4,
+		"president": "X院长",
+		"phone": "15533052683"
+	}, {
+		"id": 5,
+		"name": "计算机学院",
+		"location": "长安区东区",
+		"majorNum": 4,
+		"president": "X院长",
+		"phone": "15533052683"
+	}],
+	"prePage": 0,
+	"nextPage": 2,
+	"isFirstPage": true,
+	"isLastPage": false,
+	"hasPreviousPage": false,
+	"hasNextPage": true,
+	"navigatePages": 5,
+	"navigatepageNums": [1, 2, 3],
+	"navigateFirstPage": 1,
+	"navigateLastPage": 3,
+	"lastPage": 3,
+	"firstPage": 1
 }

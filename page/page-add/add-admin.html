@@ -20,36 +20,40 @@
 </head>
 
 <body>
-    <div class="layui-form layuimini-form">
-        <div class="layui-form-item">
-            <label class="layui-form-label required">姓名</label>
+    <div class="layui-form layuimini-form layui-container" lay-filter="admin">
+        <!-- <div class="layui-form-item layui-row">
+            <label class="layui-form-label required" >姓名</label>
             <div class="layui-input-block">
                 <input type="text" name="name" id="name"lay-verify="name" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
-                    value="" class="layui-input">
+                    value="" class="layui-input layui-col-lg6" >
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label required">昵称</label>
             <div class="layui-input-block">
                 <input type="text" name="display_name" id="display_name"lay-verify="required" lay-reqtext="用户名不能为空" placeholder="请输入用户名"
-                    value="" class="layui-input">
+                    value="" class="layui-input" >
                 <tip>填写自己管理账号的昵称。</tip>
             </div>
-        </div>
+        </div> -->
+
         <div class="layui-form-item">
             <label class="layui-form-label required">性别</label>
             <div class="layui-input-block">
-                <input type="radio" name="sex" id="sex"value="男" title="男" checked="">
-                <input type="radio" name="sex" id="sex"value="女" title="女">
+                <input type="radio" name="sex" id="sex"value="m" title="男" checked="">
+                <input type="radio" name="sex" id="sex"value="f" title="女">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label required">手机</label>
             <div class="layui-input-block">
-                <input type="phone" name="phone" id="username" lay-verify="phone" lay-reqtext="手机号码不能为空"
+                <input type="phone" name="username" id="username" lay-verify="phone" lay-reqtext="手机号码不能为空"
                     placeholder="请输入手机号码" value="" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label required">密码</label>
             <div class="layui-input-block">
@@ -57,6 +61,7 @@
                     value="" class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">管理员头像</label>
             <div class="layui-input-block">
@@ -70,15 +75,15 @@
                 </div>
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label required">所属学院</label>
             <div class="layui-input-inline">
-                <select name="college" id="college" lay-filter="p" value="">
-                    <option value="1">计算机学院</option>
-                    <option value="2">理学院</option>
+                <select name="college_id" id="college" lay-filter="college-filter" value="">
                 </select>
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">邮箱</label>
             <div class="layui-input-block">
@@ -88,11 +93,13 @@
 
         <div class="layui-form-item">
             <div class="layui-input-block">
-                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn" id="LAY-component-form-getval">确认保存</button>
             </div>
         </div>
     </div>
+
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
         layui.use(['layer', 'form', 'upload', 'laydate'], function () {
             let layer = layui.layer;
@@ -100,6 +107,37 @@
             let upload = layui.upload;
             let laydate = layui.laydate;
             let $ = layui.$;
+
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/retrieve/all', function (res) {
+                var $college = $('#college');
+                //遍历数组
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+
+            })
+
+            //获取表单数据然后提交
+            layui.$('#LAY-component-form-getval').on('click', function(){
+                var data = form.val('admin');
+                $.ajax({
+                    url: realm_name + '/manager',
+                    method: "POST",
+                    data: JSON.stringify(data),
+                    success:function(res){
+                        alert(res.message);
+                        //关闭添加界面
+
+                        //来到最后一页
+                    }
+                })
+                //alert(JSON.stringify(data));
+            });
+
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
