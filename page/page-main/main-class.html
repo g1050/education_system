@@ -29,6 +29,7 @@
     </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
 <script>
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
@@ -38,26 +39,37 @@
         table.render({
             elem: '#currentTableId',
             //创建json
-            url: '../../api/table-class.json',
+            url: realm_name + '/class',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
+
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
+                }  
+            },
+
             cols: [[
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 90, title: 'ID', sort: true},
-                {field: 'major', width: 90, title: '专业'},
-                {field: 'student_num', width: 180, title: '学生人数',sort:true},
+                {field: 'collegeId', width: 90, title: '学院'},
+                {field: 'majorId', width: 90, title: '专业'},
+                {field: 'studentNum', width: 180, title: '学生人数',sort:true},
                 {field: 'name', width: 180, title: '名字'},
                 {field: 'director', width: 90, title: '班长'},
-                {field: 'party_secretary', width: 160, title: '团支书'},
+                {field: 'partySecretary', width: 160, title: '团支书'},
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limit: 10,
             page: true,
             skin: 'line'
         });
