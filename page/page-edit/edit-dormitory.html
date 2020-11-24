@@ -19,6 +19,13 @@
 <body>
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
+            <label class="layui-form-label required">宿舍ID</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 360px;" readonly="readonly" name="id" id="id"lay-verify="name" lay-reqtext="名称不能为空" value="" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label required">宿舍名字</label>
             <div class="layui-input-block">
                 <input type="text" style="width: 360px;" name="name"  id="name"lay-verify="required" lay-reqtext="宿舍名不能为空" placeholder="请输入宿舍名" value=""
@@ -66,11 +73,26 @@
     </div>
     </div>
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
-        layui.use(['form'], function () {
+        var data = 1;
+        layui.use(['form'], function (obj) {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+                var data = parent.data;
+                console.log(data);
+            
+            $(function(){
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#building").val(data.building);
+                $("#room").val(data.room);
+                $("#number").val(data.number);
+                $("#director").val(data.director);
+                $("#member").val(data.member);
+                form.render('select');
+            })
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
@@ -79,10 +101,27 @@
                 }, function () {
 
                     // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + "/dormitory",
+                        method: "PUT",
+                        //发送json
+                        contentType:"application/json;charset=UTF-8",
+                        data: JSON.stringify(data.field),
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
 
                 });
 

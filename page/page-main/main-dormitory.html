@@ -19,7 +19,8 @@
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
-
+        <!-- 1.ajax请求获取数据
+        2.渲染在table里  -->
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
@@ -32,6 +33,7 @@
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../js/config.js"></script>
 <script>
+    var data =1;
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -150,7 +152,7 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
 
                 var index = layer.open({

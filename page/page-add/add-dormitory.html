@@ -69,25 +69,49 @@
     </div>
     </div>
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
         layui.use(['layer', 'form', 'upload', 'laydate'], function () {
             let layer = layui.layer;
             let form = layui.form;
             let upload = layui.upload;
             let laydate = layui.laydate;
+            let $ = layui.jquery;
             let $ = layui.$;
 
+            function child(obj){
+                console.log(obj);
+            }
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
+                    title: '提交的宿舍信息'
                 }, function () {
 
                     // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/dormitory',
+                        method: "POST",
+                        //发送json
+                        contentType: "application/json;charset=UTF-8",
+                        //dataType : 'json',接收数据
+                        data: JSON.stringify(data.field),
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                        
+                    })
 
                 });
 
