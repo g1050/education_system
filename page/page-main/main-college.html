@@ -159,22 +159,28 @@
                     }
                     nameList.push(data[i].name);
                 }
-                console.log(strIds);
-                layer.alert(JSON.stringify(nameList));
-
-                //发送Id给后端
-                $.ajax({
-                        url: realm_name + '/college/' + strIds,
-                        method: "DELETE",
-                        contentType:"application/json;charset=UTF-8", //发送json
-                        // dataType: 'json',接受json
-                        success:function(res){
-                            layer.alert(res.message);
-                        },
-                        error:function(res){
-                            layer.alert(res.message);
-                        }
+                console.log(JSON.stringify(nameList));
+                
+                layer.confirm('确定删除'+JSON.stringify(nameList)+'?', {
+                    btn: ['确认','取消'] //按钮
+                    }, function(){
+                        //发送Id给后端
+                        $.ajax({
+                            url: realm_name + '/college/' + strIds,
+                            method: "DELETE",
+                            contentType:"application/json;charset=UTF-8", //发送json
+                            // dataType: 'json',接受json
+                            success:function(res){
+                                layer.alert(res.message);
+                                //刷新table
+                                table.reload('currentTableId');
+                            },
+                            error:function(res){
+                                layer.alert(res.message);
+                            }
                     })
+                    });
+                
             }
         });
 
@@ -192,10 +198,12 @@
         // });
 
         table.on('tool(currentTableFilter)', function (obj) {
+            //子layer获得data
             data = obj.data;
-            
+            console.log(data);
             if (obj.event === 'edit') {
-
+                
+                //弹出layer编辑层
                 var index = layer.open({
                     title: '编辑学院',
                     type: 2,

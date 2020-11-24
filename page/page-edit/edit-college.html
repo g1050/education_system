@@ -106,9 +106,11 @@
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+                //获取parent的data，即表格中某一行的数据 json
                 var data = parent.data;
                 // console.log(data);
 
+            //初始化数据
             $(function(){
                 $("#id").val(data.id);
                 $("#name").val(data.name);
@@ -116,6 +118,7 @@
                 $("#phone").val(data.phone);
                 $("#president").val(data.president);
                 $("#majorNum").val(data.majorNum);
+                //刷新form表单
                 form.render('select');
             })
                 
@@ -129,7 +132,7 @@
                     $.ajax({
                         url: realm_name + '/college',
                         method: "PUT",
-                        contentType:"application/json;charset=UTF-8", //发送json
+                        contentType:"application/json;charset=UTF-8", //发送json,把数据格式调成json
                         // dataType: 'json',接受json
                         data: JSON.stringify(data.field),
                         success:function(res){
