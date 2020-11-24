@@ -71,7 +71,7 @@
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limit: 10,
 
             page: true,
             skin: 'line'
@@ -138,6 +138,8 @@
                         // dataType: 'json',接受json
                         success:function(res){
                             layer.alert(res.message);
+                            //刷新table
+                            table.reload('currentTableId');
                         },
                         error:function(res){
                             layer.alert(res.message);
