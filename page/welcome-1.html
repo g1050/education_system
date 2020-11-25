@@ -353,10 +353,10 @@
              */
             layui.use(['carousel'], function () {
                 var carousel = layui.carousel;
-                var i = 0
-                var ins
-                var width = $(".pic")[i].width * 0.71 //获取宽度
-                var height = $(".pic")[i].height * 0.7 //获取高度
+                var i = 0;
+                var ins;
+                var width = $(".pic")[i].width * 0.71 ;//获取宽度
+                var height = $(".pic")[i].height * 0.7 ;//获取高度
                 ins = carousel.render({
                     elem: '#carousel',
                     width: width, //设置容器宽度
@@ -366,9 +366,9 @@
                     autoplay: true
                 });
                 carousel.on('change(carofilter)', function (obj) { //监听轮播
-                    i = obj.index
-                    width = $(".img")[i].width
-                    height = $(".img")[i].height
+                    i = obj.index;
+                    width = $(".img")[i].width;
+                    height = $(".img")[i].height;
                     ins.reload({ //重置轮播
                         elem: '#carousel',
                         width: width, //设置容器宽度
