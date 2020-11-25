@@ -49,7 +49,9 @@
     </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
 <script>
+    var data = 1;
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -57,18 +59,29 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '../../api/table-student.json',
+            url: realm_name + '/student',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
+
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.test.total,
+                    "data": res.extend.test.list
+                }  
+            },
+
+
             cols: [[
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 90, title: '八位学号', sort: true},
-                {field: 'college', width: 90, title: '学院'},
-                {field: 'class', width: 240, title: '班级'},
+                {field: 'collegeId', width: 90, title: '学院'},
+                {field: 'classId', width: 240, title: '班级'},
                 {field: 'name', width: 120, title: '姓名'},
                 {field: 'phone', width: 160, title: '联系方式'},
                 {field: 'email', width: 180, title: '邮箱'},
@@ -77,7 +90,7 @@
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
             limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limit: 10,
             page: true,
             skin: 'line'
         });
@@ -132,7 +145,7 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
 
                 var index = layer.open({
