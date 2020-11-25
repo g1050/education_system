@@ -42,7 +42,7 @@
                     placeholder="请输入号码" value="" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
             <label class="layui-form-label">学生头像</label>
             <div class="layui-input-block">
                 <div class="layui-upload">
@@ -54,7 +54,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="layui-form-item">
             <label class="layui-form-label required">学院</label>
             <div class="layui-input-inline">
@@ -98,14 +98,18 @@
         </div>
     </div>
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
         layui.use(['layer', 'form', 'upload', 'laydate'], function () {
             let layer = layui.layer;
             let form = layui.form;
             let upload = layui.upload;
             let laydate = layui.laydate;
-            let $ = layui.$;
+            let $ = layui.jquery;
 
+            function child(obj) {
+                console.log(obj);
+            }
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
@@ -113,35 +117,54 @@
                 }, function () {
 
                     // 关闭弹出层
-                    layer.close(index);
+                    // layer.close(index);
 
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    // var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    // parent.layer.close(iframeIndex);
+
+                    $.ajax({
+                        url: realm_name + '/student',
+                        method: "POST",
+                        ContentType: "application/json;charset=UTf-8",
+                        data: JSON.stringify(data.field),
+                        success: function(res){
+                            layer.alert(res.message, function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error: function(res){
+                            layer.alert(res.message, function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        }
+                    })
 
                 });
 
                 return false;
             });
 
-            let myFile;
-            upload.render({
-                elem: '#test1'
-                , saveW: 150     //保存宽度
-                , saveH: 150   //保存高度
-                , mark: 1 / 1    //选取比例
-                , area: '900px'  //弹窗宽度
-                , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-                , done: function (data) { //上传完毕回调
-                    if (data.code == 1) {
-                        $('#demo1').attr('src', data.url);
-                        $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
-                    } else {
-                        return layer.msg('上传失败');
-                    }
-                    /* $("#inputimgurl").val(url);
-                     $("#srcimgurl").attr('src',url);*/
-                }
-            });
+            // let myFile;
+            // upload.render({
+            //     elem: '#test1'
+            //     , saveW: 150     //保存宽度
+            //     , saveH: 150   //保存高度
+            //     , mark: 1 / 1    //选取比例
+            //     , area: '900px'  //弹窗宽度
+            //     , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+            //     , done: function (data) { //上传完毕回调
+            //         if (data.code == 1) {
+            //             $('#demo1').attr('src', data.url);
+            //             $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
+            //         } else {
+            //             return layer.msg('上传失败');
+            //         }
+            //         /* $("#inputimgurl").val(url);
+            //          $("#srcimgurl").attr('src',url);*/
+            //     }
+            // });
 
 
         });
