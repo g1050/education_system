@@ -135,6 +135,9 @@
                         contentType:"application/json;charset=UTF-8", //发送json,把数据格式调成json
                         // dataType: 'json',接受json
                         data: JSON.stringify(data.field),
+                        headers: {
+                            "access_token":layui.data('table').token//此处放置请求到的用户token
+                        },
                         success:function(res){
                             layer.alert(res.message,function(){
                                 window.parent.location.reload();

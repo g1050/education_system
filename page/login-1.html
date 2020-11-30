@@ -100,13 +100,14 @@
                 success:function(res){
                     if(res.code == "0"){
                         //token写入local storage
-                        // layui.data(setter.tableName, {
-                        //     key: "token",
-                        //     value: res.extend.token
-                        // });
+                        layui.data('table', {
+                            key: "token",
+                            value: res.extend.token
+                        });
+                        console.log('取出的token为'+layui.data('table').token);
 
                         layer.msg('登录成功', function () {
-                            window.location = '../index.html';
+                            // window.location = '../index.html';
                         });
                     }else{
                         layer.msg('账号或密码错误');
