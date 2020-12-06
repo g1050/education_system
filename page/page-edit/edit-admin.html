@@ -19,9 +19,17 @@
 <body>
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
+            <label class="layui-form-label required">ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" id="id"lay-verify="name" lay-reqtext="名称不能为空" placeholder="请输入学院名称" value=""
+                    class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
             <label class="layui-form-label required">姓名</label>
             <div class="layui-input-block">
-                <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
+                <input type="text" name="username" id="username" lay-verify="username" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
                     value="" class="layui-input">
             </div>
         </div>
@@ -91,11 +99,27 @@
     </div>
     </div>
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
+
         layui.use(['form'], function () {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+                var data = parent.data;
+
+            //初始化数据
+            $(function(){
+                $("#id").val(data.id);
+                $("#username").val(data.username);
+                $("#sex").val(data.sex);
+                $("#location").val(data.location);
+                $("#password").val(data.password);
+                $("#president").val(data.president);
+                $("#majorNum").val(data.majorNum);
+                //刷新form表单
+                form.render('select');
+            })
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {

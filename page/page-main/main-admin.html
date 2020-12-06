@@ -69,11 +69,14 @@
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../js/config.js"></script>
 <script>
+    var data;
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
 
+        
+        
         table.render({
             elem: '#currentTableId',
             url: realm_name + '/manager',
@@ -96,12 +99,23 @@
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 90, title: 'ID', sort: true},
                 // {field: 'name', width: 90, title: '姓名'},
-                {field: 'username', width: 180, title: '手机号'},
+                {field: 'username', width: 180, title: '姓名'},
                 // {field: 'display_name', width: 180, title: '昵称'},
-                {field: 'sex', width: 90, title: '性别', sort: true},
+                {field: 'sex', width: 90, title: '性别', sort: true,templet: function(d){if(d.sex == 'm'){return '男'}else{return '女'}}},
                 {field: 'collegeId', width: 160, title: '所属学院'},
                 {field: 'email', width: 180, title: '邮箱'},
-                {field: 'createTime', width: 180, title: '最后操作时间'},
+                {field: 'createTime', width: 180, title: '创建时间'
+                // ,templet: 
+                //function(nS) {     
+                //     var time = new Date(timestamp);
+                //     var y = time.getFullYear();
+                //     var m = time.getMonth()+1;
+                //     var d = time.getDate();
+                //  var h = time.getHours();
+                //  var mm = time.getMinutes();
+                //  var s = time.getSeconds();
+                //  return y;     
+            },
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -162,7 +176,7 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
 
                 var index = layer.open({
