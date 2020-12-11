@@ -100,7 +100,11 @@
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 120, title: '专业编号', sort: true},
                 {field: 'name', width: 180, title: '专业名字'},
-                {field: 'collegeId',width: 200, title: '学院'},
+                {field: 'collegeId',width: 200, title: '学院',
+                templet:function(d){
+                    return d.college.name;
+                }
+                },
                 {field: 'number', width: 150, title: '学生人数',sort: true},
                 {field: 'director', width: 80, title: '系主任'},
 
