@@ -67,7 +67,9 @@
     </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
 <script>
+    var data = 1;
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -75,25 +77,39 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '../../api/table-major.json',
+            url: realm_name + '/major',
+
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
+
+            parseData:function(res){
+                return{
+                    "code":res.code,
+                    "msg":res.message,
+                    "count":res.extend.pageInfo.total,
+                    "data":res.extend.pageInfo.list
+                }
+
+            },
+
             cols: [[
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 120, title: '专业编号', sort: true},
                 {field: 'name', width: 180, title: '专业名字'},
-                {field: 'college',width: 200, title: '学院'},
+                {field: 'collegeId',width: 200, title: '学院'},
                 {field: 'number', width: 150, title: '学生人数',sort: true},
                 {field: 'director', width: 80, title: '系主任'},
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
+
             limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limit: 10,
+
             page: true,
             skin: 'line'
         });
@@ -124,7 +140,7 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
-                    title: '添加管理员',
+                    title: '添加专业',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
@@ -138,7 +154,38 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+                
+                //遍历data获取Id数组
+                var strIds = "";
+                var nameList = [];
+                for(i = 0;i<data.length;i++){
+                    strIds += data[i].id.toString();
+                    if(i != data.length-1){
+                        strIds += "-";
+                    }
+                    nameList.push(data[i].name);
+                }
+                console.log(JSON.stringify(nameList));
+                
+                layer.confirm('确定删除'+JSON.stringify(nameList)+'?', {
+                    btn: ['确认','取消'] //按钮
+                    }, function(){
+                        //发送Id给后端
+                        $.ajax({
+                            url: realm_name + '/major/' + strIds,
+                            method: "DELETE",
+                            contentType:"application/json;charset=UTF-8", //发送json
+                            // dataType: 'json',接受json
+                            success:function(res){
+                                layer.alert(res.message);
+                                //刷新table
+                                table.reload('currentTableId');
+                            },
+                            error:function(res){
+                                layer.alert(res.message);
+                            }
+                    })
+            });
             }
         });
 
@@ -148,7 +195,7 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
 
                 var index = layer.open({
@@ -166,8 +213,20 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: realm_name + '/major/' + data.id,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        success:function(res){
+                            layer.alert(res.message);
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
+
                     obj.del();
-                    layer.close(index);
                 });
             }
         });

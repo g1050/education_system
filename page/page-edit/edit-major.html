@@ -22,7 +22,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">专业编号</label>
             <div class="layui-input-block">
-                <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="专业名字不能为空" placeholder="请输入专业编号"
+                <input type="text" name="id" id="id" lay-verify="id" lay-reqtext="专业编号不能为空" placeholder="请输入专业编号"
                     value="" class="layui-input id">
             </div>
         </div>
@@ -67,7 +67,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">开设学院</label>
             <div class="layui-input-inline">
-                <select name="college" id="college" lay-filter="p" value="">
+                <select name="collegeId" id="collegeId" lay-filter="p" value="">
                     <option value="1">计算机学院</option>
                     <option value="2">理学院</option>
                 </select>
@@ -88,11 +88,25 @@
     </div>
     </div>
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
         layui.use(['form'], function () {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+                //获取parent的data，即表格中某一行的数据 json
+                var data = parent.data;
+                //console.log(data);
+                $(function(){
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#director").val(data.director);
+                $("#collegeId").val(data.collegeId);
+                $("#number").val(data.number);
+                
+                //刷新form表单
+                form.render('select');
+            })
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
@@ -100,12 +114,29 @@
                     title: '最终的提交信息'
                 }, function () {
 
-                    // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
-
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/major',
+                        method: "PUT",
+                        contentType:"application/json;charset=UTF-8", //发送json,把数据格式调成json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(data.field),
+                        headers: {
+                            "access_token":layui.data('table').token//此处放置请求到的用户token
+                        },
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
                 });
 
                 return false;
