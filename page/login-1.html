@@ -51,8 +51,11 @@
                     <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住密码">
                 </div>
                 <div class="layui-form-item">
-                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 入</button>
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" lay-filter="login">登 录</button>
                 </div>
+                <!-- <div class="layui-form-item">
+                    <input class="layui-btn layui-btn layui-btn-normal layui-btn-fluid"  id="weibo" value="扫码登录" >
+                </div> -->
             </form>
         </div>
     </div>
@@ -62,13 +65,15 @@
 <script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
 <script src="../js/config.js"></script>
 <script>
+    
     layui.use(['form'], function () {
         var form = layui.form,
-            layer = layui.layer;
-            $ = layui.jquery,
+            layer = layui.layer,
+            $ = layui.jquery;
 
-            
 
+        var client_id = '';
+        var redirect_uri = 'https://m30606.jp.cdjxt.net/api';
         // // 登录过期的时候，跳出ifram框架
         // if(top.location != self.location) top.location = self.location;
 
@@ -79,6 +84,12 @@
                 lineColor:'#7ec7fd'
             });
         });
+        
+
+        // $('#weibo').click(function(){
+        //     window.location.href = 'https://api.weibo.com/oauth2/authorize?client_id=' + client_id +
+        //              '&redirect_uri=' + redirect_uri + '&response_type=code';
+        // })
 
         // 进行登录操作
         form.on('submit(login)', function (data) {
