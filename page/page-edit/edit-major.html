@@ -67,9 +67,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">开设学院</label>
             <div class="layui-input-inline">
-                <select name="collegeId" id="collegeId" lay-filter="p" value="">
-                    <option value="1">计算机学院</option>
-                    <option value="2">理学院</option>
+                <select name="collegeId" id="college" lay-filter="p" value="">
                 </select>
             </div>
         </div>
@@ -98,14 +96,33 @@
                 var data = parent.data;
                 //console.log(data);
                 $(function(){
-                $("#id").val(data.id);
-                $("#name").val(data.name);
-                $("#director").val(data.director);
-                $("#collegeId").val(data.collegeId);
-                $("#number").val(data.number);
-                
-                //刷新form表单
-                form.render('select');
+                    $("#id").val(data.id);
+                    $("#name").val(data.name);
+                    $("#director").val(data.director);
+                    $("#collegeId").val(data.collegeId);
+                    $("#number").val(data.number);
+                    
+                    //刷新form表单
+                    form.render('select');
+                })
+
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all', function (res) {
+                var $college = $('#college');
+                //console.log(res.extend.college);
+                //遍历数组
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    if(value.id == data.collegeId){
+                        $college.append("<option value=" + value.id + " selected = 'selected'>" + value.name);
+                    }else{
+                        $college.append("<option value=" + value.id + ">" + value.name);
+                    }
+                    
+                });
+                //刷新select
+                form.render('select',null);
+
             })
 
             //监听提交
