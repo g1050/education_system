@@ -149,6 +149,7 @@
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
                   
+                console.log(data);
                 //遍历data获取Id数组
                 var strIds = "";
                 var nameList = [];
@@ -159,8 +160,9 @@
                     }
                     nameList.push(data[i].name);
                 }
+
                 console.log(JSON.stringify(nameList));
-                
+                //localhost:8080/api/college/8-10-11
                 layer.confirm('确定删除'+JSON.stringify(nameList)+'?', {
                     btn: ['确认','取消'] //按钮
                     }, function(){
@@ -199,7 +201,7 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             //子layer获得data
-            data = obj.data;
+            data = obj.data; //父层初始化data
             console.log(data);
             if (obj.event === 'edit') {
                 
@@ -220,6 +222,7 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+                    
                     //发送ajax请求
                     $.ajax({
                         url: realm_name + '/college/' + data.id,

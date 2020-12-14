@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../css/public.css" media="all">
     <link rel="stylesheet" href="../../css/major.css">
+    <script src="https://cdn.bootcss.com/vue/2.5.13/vue.min.js"></script>
     <style>
         /* .layui-form input {
             width: 356px;
@@ -50,9 +51,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">开设学院</label>
             <div class="layui-input-inline">
-                <select name="college" id="college" lay-filter="p" value="">
-                    <option value="1">计算机学院</option>
-                    <option value="2">理学院</option>
+                <select name="collegeId" id="college" lay-filter="p" value="">
                 </select>
             </div>
         </div>
@@ -70,50 +69,89 @@
         </div>
     </div>
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
-        layui.use(['layer', 'form', 'upload', 'laydate'], function () {
+        layui.use(['layer', 'form', 'jquery'], function () {
             let layer = layui.layer;
             let form = layui.form;
+            let $ = layui.jquery;
+
+            // function child(obj){
+            //     console.log(obj);
+            // }
             let upload = layui.upload;
             let laydate = layui.laydate;
-            let $ = layui.$;
+
+            console.log(111);
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all', function (res) {
+                var $college = $('#college');
+                //遍历数组
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+
+            })
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
+                    title: '提交的专业信息'
                 }, function () {
 
-                    // 关闭弹出层
-                    layer.close(index);
+                    // // 关闭弹出层
+                    // layer.close(index);
 
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    // var iframeIndex = parent.layer.getFrameIndex(window.name);
+                    // parent.layer.close(iframeIndex);
+                    //提交数据
+                    $.ajax({
+                       url: realm_name + '/major',
+                       method: "POST",
+                       contentType:"application/json;charset=UTF-8",//发送json
+                       //dataType:'json',接收json
+                       data: JSON.stringify(data.field),
+                       success:function(res){
+                           layer.alert(res.message,function(){
+                               window.parent.location.reload();
+                               parent.layer.close(index);
+                           })
+                       },
+                       error:function(res){s
+                           layer.alert(res.message,function(){
+                               window.parent.location.reload();
+                               parent.layer.close(index);
+                           })
+                       } 
+                    })
 
                 });
 
                 return false;
             });
 
-            let myFile;
-            upload.render({
-            elem: '#test1'
-            ,saveW:150     //保存宽度
-            ,saveH:150   //保存高度
-            ,mark:1/1    //选取比例
-            ,area:'900px'  //弹窗宽度
-            ,url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-            ,done: function(data){ //上传完毕回调
-                if(data.code==1){
-                    $('#demo1').attr('src', data.url);
-                    $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
-                }else {
-                    return layer.msg('上传失败');
-                }
-               /* $("#inputimgurl").val(url);
-                $("#srcimgurl").attr('src',url);*/
-            }
-        });
+        //     let myFile;
+        //     upload.render({
+        //     elem: '#test1'
+        //     ,saveW:150     //保存宽度
+        //     ,saveH:150   //保存高度
+        //     ,mark:1/1    //选取比例
+        //     ,area:'900px'  //弹窗宽度
+        //     ,url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+        //     ,done: function(data){ //上传完毕回调
+        //         if(data.code==1){
+        //             $('#demo1').attr('src', data.url);
+        //             $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
+        //         }else {
+        //             return layer.msg('上传失败');
+        //         }
+        //        /* $("#inputimgurl").val(url);
+        //         $("#srcimgurl").attr('src',url);*/
+        //     }
+        // });
 
 
         });
