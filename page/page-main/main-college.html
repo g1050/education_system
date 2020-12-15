@@ -128,6 +128,7 @@
                     }
                 }, 'data');
 
+<<<<<<< HEAD
                 return false;
             });
 
@@ -167,6 +168,46 @@
                     layer.confirm('确定删除' + JSON.stringify(nameList) + '?', {
                         btn: ['确认', '取消'] //按钮
                     }, function () {
+=======
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {  // 监听添加操作
+                var index = layer.open({
+                    title: '添加学院',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../../page/page-add/add-college.html',
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                  
+                console.log(data);
+                //遍历data获取Id数组
+                var strIds = "";
+                var nameList = [];
+                for(i = 0;i<data.length;i++){
+                    strIds += data[i].id.toString();
+                    if(i != data.length-1){
+                        strIds += "-";
+                    }
+                    nameList.push(data[i].name);
+                }
+
+                console.log(JSON.stringify(nameList));
+                //localhost:8080/api/college/8-10-11
+                layer.confirm('确定删除'+JSON.stringify(nameList)+'?', {
+                    btn: ['确认','取消'] //按钮
+                    }, function(){
+>>>>>>> 4b628cc09af4e62815305f6b0dc8a5c146f94cd0
                         //发送Id给后端
                         $.ajax({
                             url: realm_name + '/college/' + strIds,
@@ -187,6 +228,7 @@
                 }
             });
 
+<<<<<<< HEAD
             //监听表格复选框选择
             table.on('checkbox(currentTableFilter)', function (obj) {
                 console.log(obj)
@@ -216,6 +258,53 @@
                         area: ['100%', '100%'],
                         content: '../../page/page-edit/edit-college.html',
                     });
+=======
+        // //单机事件
+        // table.on('row(test)', function(obj){
+        //     var data = obj.data;
+            
+        //     layer.alert(JSON.stringify(data), {
+        //     title: '当前行数据：'
+        // });
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            //子layer获得data
+            data = obj.data; //父层初始化data
+            console.log(data);
+            if (obj.event === 'edit') {
+                
+                //弹出layer编辑层
+                var index = layer.open({
+                    title: '编辑学院',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../../page/page-edit/edit-college.html',
+                });
+
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('真的删除行么', function (index) {
+                    
+                    //发送ajax请求
+                    $.ajax({
+                        url: realm_name + '/college/' + data.id,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        success:function(res){
+                            layer.alert(res.message);
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
+>>>>>>> 4b628cc09af4e62815305f6b0dc8a5c146f94cd0
 
                     $(window).on("resize", function () {
                         layer.full(index);

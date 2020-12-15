@@ -21,13 +21,13 @@
 
 <body>
     <div class="layui-form layuimini-form">
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
             <label class="layui-form-label required">8位学号</label>
             <div class="layui-input-block">
                 <input type="text" name="id" id="id"lay-verify="name" lay-reqtext="id不能为空" placeholder="请输入学号" value=""
                     class="layui-input">
             </div>
-        </div>
+        </div> -->
         <div class="layui-form-item">
             <label class="layui-form-label required">姓名</label>
             <div class="layui-input-block">
@@ -58,7 +58,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">学院</label>
             <div class="layui-input-inline">
-                <select name="college" id="college" lay-filter="p" value="">
+                <select name="collegeId" id="collegeId" lay-filter="p" value="">
                     <option value="1">计算机学院</option>
                     <option value="2">理学院</option>
                 </select>
@@ -73,21 +73,21 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">性别</label>
             <div class="layui-input-block">
-                <input type="radio" name="sex" value="男" title="男" checked="">
-                <input type="radio" name="sex" value="女" title="女">
+                <input type="radio" name="sex" value="1" title="男" checked="">
+                <input type="radio" name="sex" value="0" title="女">
             </div>
         </div>
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
             <label class="layui-form-label">班级</label>
             <div class="layui-input-block">
                 <input name="class" id="class" placeholder="请输入班级"  value="" class="layui-input">
             </div>
-        </div>
+        </div> -->
 
         <div class="layui-form-item">
             <label class="layui-form-label">身份证号</label>
             <div class="layui-input-block">
-                <input name="id_card" id="id_card" placeholder="请输入身份证号"  value="" class="layui-input">
+                <input name="idCard" id="idCard" placeholder="请输入身份证号"  value="" class="layui-input">
             </div>
         </div>
 
@@ -125,7 +125,7 @@
                     $.ajax({
                         url: realm_name + '/student',
                         method: "POST",
-                        ContentType: "application/json;charset=UTf-8",
+                        contentType: "application/json;charset=UTf-8",
                         data: JSON.stringify(data.field),
                         success: function(res){
                             layer.alert(res.message, function(){

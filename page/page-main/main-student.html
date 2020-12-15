@@ -135,7 +135,35 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+                    var strIds = "";
+                var nameList = [];
+                for(i = 0;i<data.length;i++){
+                    strIds += data[i].id.toString();
+                    if(i != data.length-1){
+                        strIds += "-";
+                    }
+                    nameList.push(data[i].name);
+                }
+                console.log(JSON.stringify(nameList));
+                layer.confirm('确定删除'+JSON.stringify(nameList)+'?', {
+                    btn: ['确认','取消'] //按钮
+                    }, function(){
+                        //发送Id给后端
+                        $.ajax({
+                            url: realm_name + '/student/' + strIds,
+                            method: "DELETE",
+                            contentType:"application/json;charset=UTF-8", //发送json
+                            // dataType: 'json',接受json
+                            success:function(res){
+                                layer.alert(res.message);
+                                //刷新table
+                                table.reload('currentTableId');
+                            },
+                            error:function(res){
+                                layer.alert(res.message);
+                            }
+                    })
+                    });
             }
         });
 
@@ -163,8 +191,20 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: realm_name + '/student/' + data.id,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        success:function(res){
+                            layer.alert(res.message);
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
                     obj.del();
-                    layer.close(index);
+                    
                 });
             }
         });
