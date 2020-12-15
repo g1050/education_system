@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>layui</title>
@@ -14,112 +15,125 @@
         }
     </style>
 </head>
+
 <body>
-<div class="layui-form layuimini-form">
-    <div class="layui-form-item">
-        <label class="layui-form-label required">社团名称</label>
-        <div class="layui-input-block">
-            <input type="text" name="name" id="name"lay-verify="required" lay-reqtext="社团名称不能为空" placeholder="请输入社团名称" value="" class="layui-input">
+    <div class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">社团名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" id="name" lay-verify="required" lay-reqtext="社团名称不能为空"
+                    placeholder="请输入社团名称" value="" class="layui-input">
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">负责人</label>
-        <div class="layui-input-block">
-            <input type="name" name="director" id="director" lay-verify="required" placeholder="请输入姓名" value="" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label">负责人</label>
+            <div class="layui-input-block">
+                <input type="name" name="director" id="director" lay-verify="required" placeholder="请输入姓名" value=""
+                    class="layui-input">
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">社团人数</label>
-        <div class="layui-input-block">
-            <input type="number" name="student_num" id="student_num" lay-verify="required" placeholder="请输入社团人数" value="" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label">社团人数</label>
+            <div class="layui-input-block">
+                <input type="number" name="studentNum" id="studentNum" lay-verify="required" placeholder="请输入社团人数"
+                    value="" class="layui-input">
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">所属学院</label>
-        <div class="layui-input-block">
-            <input type="text" name="college" id="college"lay-verify="required" placeholder="请输入学院名称" value="" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">所属学院</label>
+            <div class="layui-input-inline">
+                <select name="collegeId" id="college" lay-filter="p" value="">
+                    <!-- 自动填入 -->
+                </select>
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label required">联系电话</label>
-        <div class="layui-input-block">
-            <input type="number" name="phone" id="phone"lay-verify="required" lay-reqtext="号码不能为空" placeholder="请输入号码" value="" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">联系电话</label>
+            <div class="layui-input-block">
+                <input type="number" name="phone" id="phone" lay-verify="required" lay-reqtext="号码不能为空"
+                    placeholder="请输入号码" value="" class="layui-input">
+            </div>
         </div>
-    </div>
-    <div class="layui-form-item">
-        <label class="layui-form-label">邮箱</label>
-        <div class="layui-input-block">
-            <input type="email" name="email" id="email"placeholder="请输入邮箱" value="" class="layui-input">
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">描述</label>
+            <div class="layui-input-block">
+                <textarea name="description" id="description" class="layui-textarea" placeholder="请输入描述信息"></textarea>
+            </div>
         </div>
-    </div>>
-    <div class="layui-form-item layui-form-text">
-        <label class="layui-form-label">描述</label>
-        <div class="layui-input-block">
-            <textarea name="description" id="description"class="layui-textarea" placeholder="请输入描述信息"></textarea>
-        </div>
-    </div>
 
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            </div>
         </div>
     </div>
-</div>
-</div>
-<script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../../js/config.js"></script>
-<script>
-    layui.use(['form'], function () {
-        var form = layui.form,
-            layer = layui.layer,
-            $ = layui.$;
+    </div>
+    <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
+    <script>
+        var data = 1;
+        layui.use(['form'], function (obj) {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.$;
             var data = parent.data;
-                console.log(data);
+            //console.log(data);
 
-                $(function(){
+            $(function () {
                 $("#id").val(data.id);
                 $("#director").val(data.director);
                 $("#name").val(data.name);
-                $("#student_num").val(data.student_num);
-                $("#college").val(data.college);
+                $("#studentNum").val(data.studentNum);
+                $("#collegeId").val(data.collegeId);
                 $("#phone").val(data.phone);
-                $("#email").val(data.email);
                 $("#description").val(data.description);
                 form.render('select');
             })
-        //监听提交
-        form.on('submit(saveBtn)', function (data) {
-            var index = layer.alert(JSON.stringify(data.field), {
-                title: '最终的提交信息'
-            }, function () {
 
-               //提交数据
-               $.ajax({
-                        url: realm_name + "/dormitory",
+             //获取学院信息填充到select
+             $.getJSON(realm_name + '/college/all/',function(res){
+                var $college = $('#college');
+                $.each(res.extend.college,function(index,value){
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+            })
+
+            //监听提交
+            form.on('submit(saveBtn)', function (data) {
+                var index = layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                }, function () {
+
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + "/club",
                         method: "PUT",
                         //发送json
-                        contentType:"application/json;charset=UTF-8",
+                        contentType: "application/json;charset=UTF-8",
                         data: JSON.stringify(data.field),
-                        success:function(res){
-                            layer.alert(res.message,function(){
+                        success: function (res) {
+                            layer.alert(res.message, function () {
                                 window.parent.location.reload();
                                 parent.layer.close(index);
                             })
                         },
-                        error:function(res){
-                            layer.alert(res.message,function(){
+                        error: function (res) {
+                            layer.alert(res.message, function () {
                                 window.parent.location.reload();
                                 parent.layer.close(index);
                             });
                         }
-                    }) 
+                    })
 
+                });
+
+                return false;
             });
 
-            return false;
         });
-
-    });
-</script>
+    </script>
 </body>
+
 </html>

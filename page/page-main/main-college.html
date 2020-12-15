@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <title>layui</title>
@@ -10,165 +9,125 @@
     <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../css/public.css" media="all">
 </head>
-
 <body>
-    <div class="layuimini-container">
-        <div class="layuimini-main">
+<div class="layuimini-container">
+    <div class="layuimini-main">
 
-            <fieldset class="table-search-fieldset">
-                <legend>搜索信息</legend>
-                <div style="margin: 10px 10px 10px 10px">
-                    <form class="layui-form layui-form-pane" action="">
-                        <div class="layui-form-item">
-                            <div class="layui-inline">
-                                <label class="layui-form-label">学院名称</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="name" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <label class="layui-form-label">学院位置</label>
-                                <div class="layui-input-inline">
-                                    <input type="text" name="localtion" autocomplete="off" class="layui-input">
-                                </div>
-                            </div>
-                            <div class="layui-inline">
-                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
-                                    lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学院名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-                    </form>
-                </div>
-            </fieldset>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">学院位置</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="localtion" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
 
-            <script type="text/html" id="toolbarDemo">
+        <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
-
-            <!-- 1.ajax请求获取数据
+        
+        <!-- 1.ajax请求获取数据
         2.渲染在table里  -->
-            <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-            <script type="text/html" id="currentTableBar">
+        <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
-        </div>
     </div>
-    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-    <script src="../../js/config.js"></script>
-    <script>
-        var data = 1;
-        layui.use(['form', 'table'], function () {
-            var $ = layui.jquery,
-                form = layui.form,
-                table = layui.table;
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
+<script>
+    var data = 1;
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
 
-            //     <!-- 1.ajax请求获取数据
-            // 2.渲染在table里  -->
-            table.render({
-                elem: '#currentTableId',
-                url: realm_name + '/college',
-                //localhost:8080/api/college
-                toolbar: '#toolbarDemo',
-                defaultToolbar: ['filter', 'exports', 'print', {
-                    title: '提示',
-                    layEvent: 'LAYTABLE_TIPS',
-                    icon: 'layui-icon-tips'
-                }],
+        //     <!-- 1.ajax请求获取数据
+        // 2.渲染在table里  -->
+        table.render({
+            elem: '#currentTableId',
+            url: realm_name + '/college',
+            //localhost:8080/api/college
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            
+            //转换成需要的数据格式
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
+                }  
+            },
 
-                //转换成需要的数据格式
-                parseData: function (res) {
-                    return {
-                        "code": res.code,
-                        "msg": res.message,
-                        "count": res.extend.pageInfo.total,
-                        "data": res.extend.pageInfo.list
-                    }
-                },
+            cols: [[
+                {type: "checkbox", width: 150},
+                {field: 'id', width: 100, title: 'ID', sort: true},
+                {field: 'name', width: 200, title: '学院名称'},
+                {field: 'location', width: 200, title: '学院位置'},
+                {field: 'president', width: 180, title: '院长'},
+                {field: 'majorNum', width: 150, title: '专业数目', sort: true},
+                {field: 'phone', width: 160, title: '学院电话'},
+                // {field: 'email', width: 180, title: '学院邮箱'},
 
-                cols: [[
-                    { type: "checkbox", width: 150 },
-                    { field: 'id', width: 100, title: 'ID', sort: true },
-                    { field: 'name', width: 200, title: '学院名称' },
-                    { field: 'location', width: 200, title: '学院位置' },
-                    { field: 'president', width: 180, title: '院长' },
-                    { field: 'majorNum', width: 150, title: '专业数目', sort: true },
-                    { field: 'phone', width: 160, title: '学院电话' },
-                    // {field: 'email', width: 180, title: '学院邮箱'},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
 
-                    { title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center" }
-                ]],
+            limits: [5,10, 15, 20, 25, 50, 100],
+            limit: 10,
 
-                limits: [5, 10, 15, 20, 25, 50, 100],
-                limit: 10,
+            page: true,
+            skin: 'line'
+        });
 
-                page: true,
-                skin: 'line'
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息'
             });
 
-            // 监听搜索操作
-            form.on('submit(data-search-btn)', function (data) {
-                var result = JSON.stringify(data.field);
-                layer.alert(result, {
-                    title: '最终的搜索信息'
-                });
+            //执行搜索重载
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
 
-                //执行搜索重载
-                table.reload('currentTableId', {
-                    page: {
-                        curr: 1
-                    }
-                    , where: {
-                        searchParams: result
-                    }
-                }, 'data');
+            return false;
+        });
 
-<<<<<<< HEAD
-                return false;
-            });
-
-            /**
-             * toolbar监听事件
-             */
-            table.on('toolbar(currentTableFilter)', function (obj) {
-                if (obj.event === 'add') {  // 监听添加操作
-                    var index = layer.open({
-                        title: '添加学院',
-                        type: 2,
-                        shade: 0.2,
-                        maxmin: true,
-                        shadeClose: true,
-                        area: ['100%', '100%'],
-                        content: '../../page/page-add/add-college.html',
-                    });
-                    $(window).on("resize", function () {
-                        layer.full(index);
-                    });
-                } else if (obj.event === 'delete') {  // 监听删除操作
-                    var checkStatus = table.checkStatus('currentTableId')
-                        , data = checkStatus.data;
-
-                    //遍历data获取Id数组
-                    var strIds = "";
-                    var nameList = [];
-                    for (i = 0; i < data.length; i++) {
-                        strIds += data[i].id.toString();
-                        if (i != data.length - 1) {
-                            strIds += "-";
-                        }
-                        nameList.push(data[i].name);
-                    }
-                    console.log(JSON.stringify(nameList));
-
-                    layer.confirm('确定删除' + JSON.stringify(nameList) + '?', {
-                        btn: ['确认', '取消'] //按钮
-                    }, function () {
-=======
         /**
          * toolbar监听事件
          */
@@ -207,58 +166,31 @@
                 layer.confirm('确定删除'+JSON.stringify(nameList)+'?', {
                     btn: ['确认','取消'] //按钮
                     }, function(){
->>>>>>> 4b628cc09af4e62815305f6b0dc8a5c146f94cd0
                         //发送Id给后端
                         $.ajax({
                             url: realm_name + '/college/' + strIds,
                             method: "DELETE",
-                            contentType: "application/json;charset=UTF-8", //发送json
+                            contentType:"application/json;charset=UTF-8", //发送json
                             // dataType: 'json',接受json
-                            success: function (res) {
+                            success:function(res){
                                 layer.alert(res.message);
                                 //刷新table
                                 table.reload('currentTableId');
                             },
-                            error: function (res) {
+                            error:function(res){
                                 layer.alert(res.message);
                             }
-                        })
+                    })
                     });
+                
+            }
+        });
 
-                }
-            });
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
 
-<<<<<<< HEAD
-            //监听表格复选框选择
-            table.on('checkbox(currentTableFilter)', function (obj) {
-                console.log(obj)
-            });
-
-            // //单机事件
-            // table.on('row(test)', function(obj){
-            //     var data = obj.data;
-
-            //     layer.alert(JSON.stringify(data), {
-            //     title: '当前行数据：'
-            // });
-
-            table.on('tool(currentTableFilter)', function (obj) {
-                //子layer获得data
-                data = obj.data;
-                console.log(data);
-                if (obj.event === 'edit') {
-
-                    //弹出layer编辑层
-                    var index = layer.open({
-                        title: '编辑学院',
-                        type: 2,
-                        shade: 0.2,
-                        maxmin: true,
-                        shadeClose: true,
-                        area: ['100%', '100%'],
-                        content: '../../page/page-edit/edit-college.html',
-                    });
-=======
         // //单机事件
         // table.on('row(test)', function(obj){
         //     var data = obj.data;
@@ -304,36 +236,14 @@
                             layer.alert(res.message);
                         }
                     })
->>>>>>> 4b628cc09af4e62815305f6b0dc8a5c146f94cd0
 
-                    $(window).on("resize", function () {
-                        layer.full(index);
-                    });
-                    return false;
-                } else if (obj.event === 'delete') {
-                    layer.confirm('真的删除行么', function (index) {
-                        //发送ajax请求
-                        $.ajax({
-                            url: realm_name + '/college/' + data.id,
-                            method: "DELETE",
-                            contentType: "application/json;charset=UTF-8", //发送json
-                            // dataType: 'json',接受json
-                            success: function (res) {
-                                layer.alert(res.message);
-                            },
-                            error: function (res) {
-                                layer.alert(res.message);
-                            }
-                        })
-
-                        obj.del();
-                    });
-                }
-            });
-
+                    obj.del();
+                });
+            }
         });
-    </script>
+
+    });
+</script>
 
 </body>
-
 </html>

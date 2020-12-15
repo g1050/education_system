@@ -50,7 +50,7 @@
             <div class="layui-form toolbar"></div>
             <div class="layui-inline">
                 <div class="layui-input-block">
-                    <select name="major" id="major" lay-filter="parentCategory">
+                    <select name="majorId" id="major" lay-filter="parentCategory">
                         <!-- 自动填充 -->
                     </select>
                 </div>
@@ -60,7 +60,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">学生人数</label>
             <div class="layui-input-block">
-                <input type="number" name="student_num" id="student_num" lay-verify="number" placeholder="请输入学生人数"
+                <input type="number" name="studentNum" id="studentNum" placeholder="请输入学生人数"
                     value="" class="layui-input">
             </div>
         </div>
@@ -76,7 +76,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">团支书</label>
             <div class="layui-input-block">
-                <input type="name" name="party_secretary" id="party_secretary" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
+                <input type="name" name="partySecretary" id="partySecretary" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
                     value="" class="layui-input">
             </div>
         </div>
@@ -104,9 +104,9 @@
             let upload = layui.upload;
             let laydate = layui.laydate;
 
-            function child(obj) {
-                console.log(obj);
-            }
+            // function child(obj) {
+            //     console.log(obj);
+            // }
             //获取学院信息填充到select
             $.getJSON(realm_name + '/college/all/',function(res){
                 var $college = $('#college');

@@ -28,14 +28,24 @@
             </div>
 
             <div class="layui-form-item">
+                <label class="layui-form-label required">学院</label>
+                <div class="layui-form toolbar"></div>
+                <div class="layui-inline">
+                    <div class="layui-input-block">
+                        <select name="collegeId" id="college" lay-filter="parentCategory">
+                            <!-- 自动填充 -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="layui-form-item">
                 <label class="layui-form-label required">专业</label>
                 <div class="layui-form toolbar"></div>
                 <div class="layui-inline">
                     <div class="layui-input-block">
-                        <select name="major" lay-filter="parentCategory" id="major">
-                            <option value="长安区东区">软件工程</option>
-                            <option value="长安区西区">计算机科学与技术</option>
-                            <option value="雁塔区">大数据</option>
+                        <select name="majorId" id="major" lay-filter="parentCategory">
+                            <!-- 自动填充 -->
                         </select>
                     </div>
                 </div>
@@ -45,7 +55,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">学生人数</label>
             <div class="layui-input-block">
-                <input type="number" name="student_num" id="student_num" lay-verify="number" placeholder="请输入学生人数"
+                <input type="number" name="studentNum" id="studentNum" lay-verify="number" placeholder="请输入学生人数"
                     value="" class="layui-input">
             </div>
         </div>
@@ -61,7 +71,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">团支书</label>
             <div class="layui-input-block">
-                <input type="name" name="party_secretary" id="party_secretary" lay-reqtext="姓名不能为空"
+                <input type="name" name="partySecretary" id="partySecretary" lay-reqtext="姓名不能为空"
                     placeholder="请输入姓名" value="" class="layui-input">
             </div>
         </div>
@@ -78,7 +88,7 @@
     <script src="../../js/config.js"></script>
     <script>
         var data = 1;
-        layui.use(['form'], function () {
+        layui.use(['form'], function (obj) {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
@@ -88,7 +98,7 @@
 
              //初始化数据
              $(function(){
-                $("#id").val(data.id);
+                //$("#id").val(data.id);
                 $("#collegeId").val(data.collegeId);
                 $("#majorId").val(data.majorId);
                 $("#studentNum").val(data.studentNum);
@@ -97,6 +107,24 @@
                 $("#partySecretary").val(data.partySecretary);
                 //刷新form表单
                 form.render('select');
+            })
+
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all/',function(res){
+                var $college = $('#college');
+                $.each(res.extend.college,function(index,value){
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+            })
+            $.getJSON(realm_name + '/major/all/',function(res){
+                var $major = $('#major');
+                $.each(res.extend.major,function(index,value){
+                    $major.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
             })
 
             //监听提交
@@ -111,9 +139,9 @@
                         contentType:"application/json;charset=UTF-8", //发送json,把数据格式调成json
                         // dataType: 'json',接受json
                         data: JSON.stringify(data.field),
-                        headers: {
-                            "access_token":layui.data('table').token//此处放置请求到的用户token
-                        },
+                        // headers: {
+                        //     "access_token":layui.data('table').token//此处放置请求到的用户token
+                        // },
                         success:function(res){
                             layer.alert(res.message,function(){
                                 window.parent.location.reload();
