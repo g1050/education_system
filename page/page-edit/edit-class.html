@@ -20,6 +20,12 @@
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
             <div class="layui-form-item">
+                <label class="layui-form-label required">班级ID</label>
+                <div class="layui-input-block">
+                    <input type="text" style="width: 360px;" readonly="readonly" name="id" id="id"lay-verify="name" lay-reqtext="名称不能为空" value="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
                 <label class="layui-form-label required">班级名称</label>
                 <div class="layui-input-block">
                     <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="名称不能为空"
@@ -98,7 +104,7 @@
 
              //初始化数据
              $(function(){
-                //$("#id").val(data.id);
+                $("#id").val(data.id);
                 $("#collegeId").val(data.collegeId);
                 $("#majorId").val(data.majorId);
                 $("#studentNum").val(data.studentNum);
@@ -113,7 +119,13 @@
             $.getJSON(realm_name + '/college/all/',function(res){
                 var $college = $('#college');
                 $.each(res.extend.college,function(index,value){
-                    $college.append("<option value=" + value.id + ">" + value.name)
+                    //console.log(value.name);
+                    if(value.id == data.collegeId){
+                        $college.append("<option value=" + value.id + " selected = 'selected'>" + value.name);
+                    }else{
+                        $college.append("<option value=" + value.id + ">" + value.name);
+                    }
+                    
                 });
                 //刷新select
                 form.render('select',null);
@@ -121,7 +133,13 @@
             $.getJSON(realm_name + '/major/all/',function(res){
                 var $major = $('#major');
                 $.each(res.extend.major,function(index,value){
-                    $major.append("<option value=" + value.id + ">" + value.name)
+                    //console.log(value.name);
+                    if(value.id == data.majorId){
+                        $major.append("<option value=" + value.id + " selected = 'selected'>" + value.name);
+                    }else{
+                        $major.append("<option value=" + value.id + ">" + value.name);
+                    }
+                    
                 });
                 //刷新select
                 form.render('select',null);
