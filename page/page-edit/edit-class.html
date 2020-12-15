@@ -53,7 +53,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">班长</label>
             <div class="layui-input-block">
-                <input type="number" name="director" id="director" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
+                <input type="name" name="director" id="director" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
                     class="layui-input">
             </div>
         </div>
@@ -75,23 +75,58 @@
     </div>
     </div>
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
+        var data = 1;
         layui.use(['form'], function () {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+                //获取parent的data，即表格中某一行的数据 json
+                var data = parent.data;
+                // console.log(data);
+
+             //初始化数据
+             $(function(){
+                $("#id").val(data.id);
+                $("#collegeId").val(data.collegeId);
+                $("#majorId").val(data.majorId);
+                $("#studentNum").val(data.studentNum);
+                $("#name").val(data.name);
+                $("#director").val(data.director);
+                $("#partySecretary").val(data.partySecretary);
+                //刷新form表单
+                form.render('select');
+            })
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 }, function () {
-
-                    // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/class',
+                        method: "PUT",
+                        contentType:"application/json;charset=UTF-8", //发送json,把数据格式调成json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(data.field),
+                        headers: {
+                            "access_token":layui.data('table').token//此处放置请求到的用户token
+                        },
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
 
                 });
 

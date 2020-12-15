@@ -67,23 +67,52 @@
 </div>
 </div>
 <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
             $ = layui.$;
+            var data = parent.data;
+                console.log(data);
 
+                $(function(){
+                $("#id").val(data.id);
+                $("#director").val(data.director);
+                $("#name").val(data.name);
+                $("#student_num").val(data.student_num);
+                $("#college").val(data.college);
+                $("#phone").val(data.phone);
+                $("#email").val(data.email);
+                $("#description").val(data.description);
+                form.render('select');
+            })
         //监听提交
         form.on('submit(saveBtn)', function (data) {
             var index = layer.alert(JSON.stringify(data.field), {
                 title: '最终的提交信息'
             }, function () {
 
-                // 关闭弹出层
-                layer.close(index);
-
-                var iframeIndex = parent.layer.getFrameIndex(window.name);
-                parent.layer.close(iframeIndex);
+               //提交数据
+               $.ajax({
+                        url: realm_name + "/dormitory",
+                        method: "PUT",
+                        //发送json
+                        contentType:"application/json;charset=UTF-8",
+                        data: JSON.stringify(data.field),
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    }) 
 
             });
 

@@ -34,50 +34,59 @@
         </div>
 
         <div class="layui-form-item">
-            <label class="layui-form-label required">专业</label>
+            <label class="layui-form-label required">学院</label>
             <div class="layui-form toolbar"></div>
             <div class="layui-inline">
                 <div class="layui-input-block">
-                    <select name="major" lay-filter="parentCategory" id="major">
-                        <option value="长安区东区">软件工程</option>
-                        <option value="长安区西区">计算机科学与技术</option>
-                        <option value="雁塔区">大数据</option>
+                    <select name="collegeId" id="college" lay-filter="parentCategory">
+                        <!-- 自动填充 -->
                     </select>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label required">学生人数</label>
-        <div class="layui-input-block">
-            <input type="number" name="student_num" id="student_num" lay-verify="number" placeholder="请输入学生人数" value=""
-                class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">专业</label>
+            <div class="layui-form toolbar"></div>
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <select name="major" id="major" lay-filter="parentCategory">
+                        <!-- 自动填充 -->
+                    </select>
+                </div>
+            </div>
         </div>
-    </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">班长</label>
-        <div class="layui-input-block">
-            <input type="number" name="director" id="director" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
-                class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学生人数</label>
+            <div class="layui-input-block">
+                <input type="number" name="student_num" id="student_num" lay-verify="number" placeholder="请输入学生人数"
+                    value="" class="layui-input">
+            </div>
         </div>
-    </div>
 
-    <div class="layui-form-item">
-        <label class="layui-form-label">团支书</label>
-        <div class="layui-input-block">
-            <input type="name" name="party_secretary" id="party_secretary" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
-                value="" class="layui-input">
+        <div class="layui-form-item">
+            <label class="layui-form-label">班长</label>
+            <div class="layui-input-block">
+                <input type="name" name="director" id="director" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
+                    class="layui-input">
+            </div>
         </div>
-    </div>
 
-
-    <div class="layui-form-item">
-        <div class="layui-input-block">
-            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        <div class="layui-form-item">
+            <label class="layui-form-label">团支书</label>
+            <div class="layui-input-block">
+                <input type="name" name="party_secretary" id="party_secretary" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
+                    value="" class="layui-input">
+            </div>
         </div>
-    </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+            </div>
+        </div>
 
 
 
@@ -85,53 +94,71 @@
     </div>
 
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-
+    <script src="../../js/config.js"></script>
     <script>
 
-        layui.use(['layer', 'form', 'jquery', 'upload', 'laydate'], function () {
+        layui.use(['layer', 'form','upload','laydate'], function () {
             let layer = layui.layer;
             let form = layui.form;
+            let $ = layui.$;
             let upload = layui.upload;
             let laydate = layui.laydate;
-            let layarea = layui.layarea;
-            let $ = layui.jquery;
 
+            function child(obj) {
+                console.log(obj);
+            }
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all/',function(res){
+                var $college = $('#college');
+                $.each(res.extend.college,function(index,value){
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+            })
+            $.getJSON(realm_name + '/major/all/',function(res){
+                var $major = $('#major');
+                $.each(res.extend.major,function(index,value){
+                    $major.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+            })
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
+                    title: '提交的班级信息'
                 }, function () {
-
-                    // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/class',
+                        method: "POST",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(data.field),
+                        // headers: {
+                        //     "access_token":layui.data('table').token//此处放置请求到的用户token
+                        // },
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
 
                 });
 
                 return false;
             });
 
-            let myFile;
-            upload.render({
-                elem: '#test1'
-                , saveW: 150     //保存宽度
-                , saveH: 150   //保存高度
-                , mark: 1 / 1    //选取比例
-                , area: '900px'  //弹窗宽度
-                , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-                , done: function (data) { //上传完毕回调
-                    if (data.code == 1) {
-                        $('#demo1').attr('src', data.url);
-                        $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
-                    } else {
-                        return layer.msg('上传失败');
-                    }
-                    /* $("#inputimgurl").val(url);
-                     $("#srcimgurl").attr('src',url);*/
-                }
-            });
+
         });
 
     </script>
