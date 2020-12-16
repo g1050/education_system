@@ -18,6 +18,14 @@
 
 <body>
     <div class="layui-form layuimini-form">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">社团ID</label>
+            <div class="layui-input-block">
+                <input type="text" style="width: 360px;" readonly="readonly" name="id" id="id" lay-verify="name"
+                    lay-reqtext="名称不能为空" value="" class="layui-input">
+            </div>
+        </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">社团名称</label>
             <div class="layui-input-block">
@@ -90,14 +98,20 @@
                 form.render('select');
             })
 
-             //获取学院信息填充到select
-             $.getJSON(realm_name + '/college/all/',function(res){
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all/', function (res) {
                 var $college = $('#college');
                 $.each(res.extend.college,function(index,value){
-                    $college.append("<option value=" + value.id + ">" + value.name)
+                    //console.log(value.name);
+                    if(value.id == data.collegeId){
+                        $college.append("<option value=" + value.id + " selected = 'selected'>" + value.name);
+                    }else{
+                        $college.append("<option value=" + value.id + ">" + value.name);
+                    }
+                    
                 });
                 //刷新select
-                form.render('select',null);
+                form.render('select', null);
             })
 
             //监听提交
