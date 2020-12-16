@@ -21,16 +21,23 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">课程ID</label>
             <div class="layui-input-block">
-                <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="课程ID不能为空" placeholder="请输入课程ID"
+                <input type="text" name="id" id="id" lay-verify="name" lay-reqtext="课程ID不能为空" placeholder="请输入课程ID"
                     value="" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">课程名</label>
             <div class="layui-input-block">
-                <input type="text" name="display_name" id="display_name" lay-verify="required" lay-reqtext="用户名不能为空"
+                <input type="text" name="name" id="name" lay-verify="required" lay-reqtext="用户名不能为空"
                     placeholder="请输入课程名" value="" class="layui-input">
                 <tip>填写修改的课程名称。</tip>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">开设学院</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="college" id="college" lay-verify="name" lay-reqtext="请输入学院名" placeholder="请输入学院名"
+                        value="" class="layui-input">
+                </div>
             </div>
         <!-- </div>
         <div class="layui-form-item">
@@ -54,7 +61,7 @@
                     placeholder="请输入密码" value="" class="layui-input">
             </div>
         </div> -->
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
             <label class="layui-form-label">课程图片</label>
             <div class="layui-input-block">
                 <div class="layui-upload">
@@ -66,11 +73,11 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="layui-form-item">
             <label class="layui-form-label required">是否必修</label>
             <div class="layui-input-inline">
-                <select name="college" id="college" lay-filter="p" value="">
+                <select name="required" id="required" lay-filter="p" value="">
                     <option value="1">是</option>
                     <option value="2">否</option>
                 </select>
@@ -79,14 +86,14 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">课时</label>
             <div class="layui-input-block">
-                <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="课时不能为空" placeholder="请输入课时"
+                <input type="text" name="classHour" id="classHour" lay-verify="name" lay-reqtext="课时不能为空" placeholder="请输入课时"
                     value="" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">学分</label>
             <div class="layui-input-block">
-                <input type="text" name="name" id="name" lay-verify="name" lay-reqtext="学分不能为空" placeholder="请输入学分"
+                <input type="text" name="score" id="score" lay-verify="name" lay-reqtext="学分不能为空" placeholder="请输入学分"
                     value="" class="layui-input">
             </div>
         </div>
