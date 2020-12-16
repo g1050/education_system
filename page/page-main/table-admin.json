@@ -1,0 +1,52 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 10000,
+      "username": "15332681597",
+      "display_name":"海清",
+      "name":"李晓欢",
+      "sex": "女",
+      "college": "计算机学院",
+      "email":"1705230402@qq.com"
+    },
+    {
+      "id": 10001,
+      "username": "15332681597",
+      "display_name":"海清",
+      "name":"李晓欢",
+      "sex": "女",
+      "college": "计算机学院",
+      "email":"1705230402@qq.com"
+    },
+    {
+      "id": 10002,
+      "username": "15332681597",
+      "display_name":"海清",
+      "name":"李晓欢",
+      "sex": "女",
+      "college": "计算机学院",
+      "email":"1705230402@qq.com"
+    },
+    {
+      "id": 10003,
+      "username": "15332681597",
+      "display_name":"海清",
+      "name":"李晓欢",
+      "sex": "女",
+      "college": "计算机学院",
+      "email":"1705230402@qq.com"
+    },
+    {
+      "id": 10004,
+      "username": "15332681597",
+      "display_name":"海清",
+      "name":"李晓欢",
+      "sex": "女",
+      "college": "计算机学院",
+      "email":"1705230402@qq.com"
+    }
+  ]
+}

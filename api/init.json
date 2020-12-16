@@ -90,6 +90,12 @@
               "href": "page/page-main/main-major.html",
               "icon": "fa fa-tachometer",
               "target": "_self"
+            },
+            {
+              "title": "讲师安排",
+              "href": "page/page-main/main-course_to_teacher.html",
+              "icon": "fa fa-tachometer",
+              "target": "_self"
             }
           ]
         }

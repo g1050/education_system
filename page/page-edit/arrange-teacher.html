@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="layui-form layuimini-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学院ID</label>
+            <div class="layui-input-block">
+                <input type="text" name="id" id="id"lay-verify="name" lay-reqtext="名称不能为空" placeholder="请输入学院名称" value=""
+                    class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学院名称</label>
+            <div class="layui-input-block">
+                <input type="text" name="name" id="name"lay-verify="name" lay-reqtext="名称不能为空" placeholder="请输入学院名称" value=""
+                    class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label required">学院位置</label>
+            <div class="layui-form toolbar"></div>
+            <div class="layui-inline">
+                <div class="layui-input-block">
+                    <select name="location" lay-filter="parentCategory" id="location">
+                        <option value=""></option>
+                        <option value="长安区东区">长安区东区</option>
+                        <option value="长安区西区">长安区西区</option>
+                        <option value="雁塔区">雁塔区</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    
+
+    <div class="layui-form-item">
+        <label class="layui-form-label required">学院热线</label>
+        <div class="layui-input-block">
+            <input type="phone" name="phone" id="phone" lay-verify="phone" lay-reqtext="号码不能为空" placeholder="请输入号码"
+                value="" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label required">院长</label>
+        <div class="layui-input-block">
+            <input id = "president" type="name" name="president" lay-verify="president" lay-reqtext="姓名不能为空" placeholder="请输入姓名" value=""
+                class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">专业数目</label>
+        <div class="layui-input-block">
+            <input id = "majorNum" type="number" name="majorNum" lay-reqtext="专业数目不能为空" placeholder="请输入专业数目" value=""
+                class="layui-input">
+        </div>
+    </div>
+
+    <!-- <div class="layui-form-item">
+        <label class="layui-form-label">学院照片</label>
+        <div class="layui-input-block">
+            <div class="layui-upload">
+                <button type="button" class="layui-btn" id="test1" data-src="{$find.college_logo}">上传图片</button>
+                <div class="layui-upload-list">
+                    <img class="layui-upload-img" id="demo1" style="width: 100px;height: 100px;"
+                        src="{$find.college_logo}">
+                    <p id="demoText"></p>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!-- <div class="layui-form-item">
+        <label class="layui-form-label">学院邮箱</label>
+        <div class="layui-input-block">
+            <input type="email" name="email" id="email"placeholder="请输入邮箱" value="" class="layui-input">
+        </div>
+    </div> -->
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+    </div>
+ 
+    <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
+    <script>
+        layui.use(['form'], function (obj) {
+            var form = layui.form,
+                layer = layui.layer,
+                $ = layui.$;
+                //获取parent的data，即表格中某一行的数据 json
+                var data = parent.data;
+                console.log(data);
+
+            //初始化数据
+            $(function(){
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#location").val(data.location);
+                $("#phone").val(data.phone);
+                $("#president").val(data.president);
+                $("#majorNum").val(data.majorNum);
+                //刷新form表单
+                form.render('select');
+            })
+                
+            //监听提交
+            form.on('submit(saveBtn)', function (data) {
+                var index = layer.alert(JSON.stringify(data.field), {
+                    title: '最终的提交信息'
+                }, function () {
+                    
+                    //提交数据
+                    $.ajax({
+                        url: realm_name + '/college',
+                        method: "PUT",
+                        contentType:"application/json;charset=UTF-8", //发送json,把数据格式调成json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(data.field),
+                        headers: {
+                            "access_token":layui.data('table').token//此处放置请求到的用户token
+                        },
+                        success:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error:function(res){
+                            layer.alert(res.message,function(){
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
+
+                });
+
+                return false;
+            });
+
+        });
+    </script>
+</body>
+
+</html>

@@ -24,7 +24,7 @@
                                 <input type="text" name="username" autocomplete="off" class="layui-input">
                             </div>
                         </div>
-                        <div class="layui-inline">
+                        <!-- <div class="layui-inline">
                             <label class="layui-form-label">管理员性别</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="sex" autocomplete="off" class="layui-input">
@@ -41,7 +41,7 @@
                             <div class="layui-input-inline">
                                 <input type="text" name="classify" autocomplete="off" class="layui-input">
                             </div>
-                        </div>
+                        </div> -->
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
@@ -133,19 +133,24 @@
         // 监听搜索操作
         form.on('submit(data-search-btn)', function (data) {
             var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
+            // layer.alert(result, {
+            //     title: '最终的搜索信息'
+            // });
+            
+            //发送ajax请求选人数据
 
             //执行搜索重载
             table.reload('currentTableId', {
+                url:realm_name+'/manager/byusername',
+                method:'POST',
                 page: {
-                    curr: 1
+                    curr: 1 //重新从第 1 页开始
                 }
                 , where: {
                     searchParams: result
-                }
-            }, 'data');
+                },
+                // cols:privilege_control(),
+            });
 
             return false;
         });
