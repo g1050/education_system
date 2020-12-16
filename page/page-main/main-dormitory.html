@@ -172,8 +172,20 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: realm_name + '/dormitory/' + data.id,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8",
+
+                        success:function(res){
+                            layer.alert(res.message);
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
                     obj.del();
-                    layer.close(index);
+                    //layer.close(index);
                 });
             }
         });

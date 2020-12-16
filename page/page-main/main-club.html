@@ -11,38 +11,27 @@
 </head>
 <body>
 <div class="layuimini-container">
-    <div class="layuimini-main">
-
-        <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">社团名称</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="name" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label" style="width: 200px;">社团所属学院</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="college" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label"style="width: 180px">社团负责人</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="director" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+    <!-- 信息检索 -->
+    <fieldset class="table-search-fieldset">
+        <legend>搜索信息</legend>
+        <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">所属学院</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" autocomplete="off" class="layui-input">
                         </div>
                     </div>
-                </form>
-            </div>
-        </fieldset>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+
+    <div class="layuimini-main">
 
         <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
@@ -51,6 +40,8 @@
             </div>
         </script>
 
+        <!-- 1.ajax请求获取数据
+        2.渲染在table里  -->
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
@@ -61,7 +52,9 @@
     </div>
 </div>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
 <script>
+    var data =1;
     layui.use(['form', 'table'], function () {
         var $ = layui.jquery,
             form = layui.form,
@@ -69,26 +62,39 @@
 
         table.render({
             elem: '#currentTableId',
-            url: '../../api/table-club.json',
+            url: realm_name + '/club',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
                 layEvent: 'LAYTABLE_TIPS',
                 icon: 'layui-icon-tips'
             }],
+
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
+                }  
+            },
+
             cols: [[
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 90, title: 'ID', sort: true},
                 {field: 'director', width: 90, title: '负责人'},
                 {field: 'name', width: 240, title: '社团名称'},
-                {field: 'student_num', width: 120, title: '社团人数', sort: true},
-                {field: 'college', width: 160, title: '所属学院'},
+                {field: 'studentNum', width: 120, title: '社团人数', sort: true},
+                {field: 'collegeId', width: 160, title: '所属学院',
+                    templet:function(d){
+                            return d.college.name
+                    }
+                },
                 {field: 'phone', width: 180, title: '联系电话'},
-                {field: 'email', width: 200, title: '邮箱'},
                 {field: 'description', width: 180, title: '社团描述'},
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
-            limits: [10, 15, 20, 25, 50, 100],
+            limits: [5, 10, 15, 20, 25, 50, 100],
             limit: 15,
             page: true,
             skin: 'line'
@@ -134,7 +140,34 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+                //遍历data获取Id数组
+                var strIds = "";
+                var nameList = [];
+                for(i = 0;i<data.length;i++){
+                    strIds += data[i].id.toString();
+                    if(i != data.length-1){
+                        strIds += "-";
+                    }
+                    nameList.push(data[i].name);
+                }
+                console.log(strIds);
+                layer.alert(JSON.stringify(nameList));
+                
+                //发送Id给后端
+                $.ajax({
+                        url: realm_name + '/club/' + strIds,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        success:function(res){
+                            layer.alert(res.message);
+                            //刷新table
+                            table.reload('currentTableId');
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
             }
         });
 
@@ -144,7 +177,7 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
 
                 var index = layer.open({
@@ -162,8 +195,19 @@
                 return false;
             } else if (obj.event === 'delete') {
                 layer.confirm('真的删除行么', function (index) {
+                    $.ajax({
+                        url: realm_name + '/club/' + data.id,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8",
+
+                        success:function(res){
+                            layer.alert(res.message);
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
                     obj.del();
-                    layer.close(index);
                 });
             }
         });
