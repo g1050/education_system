@@ -22,13 +22,6 @@
 <body>
     <div class="layui-form layuimini-form">
         <div class="layui-form-item">
-            <label class="layui-form-label required">8位一卡通号</label>
-            <div class="layui-input-block">
-                <input type="text" name="id" id="id"lay-verify="name" lay-reqtext="id不能为空" placeholder="请输入学号" value=""
-                    class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
             <label class="layui-form-label required">姓名</label>
             <div class="layui-input-block">
                 <input type="text" name="name" id="name" lay-verify="required" lay-reqtext="姓名不能为空" placeholder="请输入姓名"
@@ -42,7 +35,7 @@
                     placeholder="请输入号码" value="" class="layui-input">
             </div>
         </div>
-        <div class="layui-form-item">
+        <!-- <div class="layui-form-item">
             <label class="layui-form-label">教师头像</label>
             <div class="layui-input-block">
                 <div class="layui-upload">
@@ -54,13 +47,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="layui-form-item">
-            <label class="layui-form-label required">学院</label>
+            <label class="layui-form-label required">所属学院</label>
             <div class="layui-input-inline">
-                <select name="college" id="college" lay-filter="p" value="">
-                    <option value="1">计算机学院</option>
-                    <option value="2">理学院</option>
+                <select name="collegeId" id="college" lay-filter="p" value="">
+                    <!-- 自动填入 -->
                 </select>
             </div>
         </div>
@@ -73,24 +65,16 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">性别</label>
             <div class="layui-input-block">
-                <input type="radio" name="sex" value="男" title="男" checked="">
-                <input type="radio" name="sex" value="女" title="女">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label">班级</label>
-            <div class="layui-input-block">
-                <input name="class" id="class" placeholder="请输入班级"  value="" class="layui-input">
+                <input type="radio" name="sex" id="sex"value="false" title="男" checked="">
+                <input type="radio" name="sex" id="sex"value="true" title="女">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">住址</label>
             <div class="layui-input-block">
-                <textarea name="address" id="address"class="layui-texarea" placeholder="请输入家庭住址"></textarea>
+                <input type="text" name="address" id="address"placeholder="请输入住址" value="" class="layui-input">
             </div>
         </div>
-        
-
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
@@ -98,6 +82,7 @@
         </div>
     </div>
     <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
     <script>
         layui.use(['layer', 'form', 'upload', 'laydate'], function () {
             let layer = layui.layer;
@@ -105,6 +90,17 @@
             let upload = layui.upload;
             let laydate = layui.laydate;
             let $ = layui.$;
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all', function (res) {
+                var $college = $('#college');
+                //遍历数组
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+            })
 
             //监听提交
             form.on('submit(saveBtn)', function (data) {
@@ -112,36 +108,52 @@
                     title: '最终的提交信息'
                 }, function () {
 
-                    // 关闭弹出层
-                    layer.close(index);
+                    $.ajax({
+                        url: realm_name + '/teacher',
+                        method: "POST",
+                        //发送json
+                        contentType: "application/json;charset=UTF-8",
+                        //dataType : 'json',接收数据
+                        data: JSON.stringify(data.field),
+                        success: function (res) {
+                            layer.alert(res.message, function () {
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error: function (res) {
+                            layer.alert(res.message, function () {
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
 
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                    })
 
                 });
 
                 return false;
             });
 
-            let myFile;
-            upload.render({
-                elem: '#test1'
-                , saveW: 150     //保存宽度
-                , saveH: 150   //保存高度
-                , mark: 1 / 1    //选取比例
-                , area: '900px'  //弹窗宽度
-                , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
-                , done: function (data) { //上传完毕回调
-                    if (data.code == 1) {
-                        $('#demo1').attr('src', data.url);
-                        $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
-                    } else {
-                        return layer.msg('上传失败');
-                    }
-                    /* $("#inputimgurl").val(url);
-                     $("#srcimgurl").attr('src',url);*/
-                }
-            });
+            // let myFile;
+            // upload.render({
+            //     elem: '#test1'
+            //     , saveW: 150     //保存宽度
+            //     , saveH: 150   //保存高度
+            //     , mark: 1 / 1    //选取比例
+            //     , area: '900px'  //弹窗宽度
+            //     , url: "{:url('admin/upload/img_save',['type'=>'admin'])}"  //图片上传接口返回和（layui 的upload 模块）返回的JOSN一样
+            //     , done: function (data) { //上传完毕回调
+            //         if (data.code == 1) {
+            //             $('#demo1').attr('src', data.url);
+            //             $('#test1').attr('data-src', data.url);  //成功返回路径存到数据库
+            //         } else {
+            //             return layer.msg('上传失败');
+            //         }
+            //         /* $("#inputimgurl").val(url);
+            //          $("#srcimgurl").attr('src',url);*/
+            //     }
+            // });
 
 
         });
