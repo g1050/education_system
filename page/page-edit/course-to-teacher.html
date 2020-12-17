@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">        
+        <!-- 1.ajax请求获取数据
+        2.渲染在table里  -->
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
+        </script>
+
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
+<script>
+    
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+            data = parent.data;
+
+        table.render({
+            elem: '#currentTableId',
+            url: realm_name + '/c2t/bycourse/' + data.id,
+            //localhost:8080/api/college
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            
+            //转换成需要的数据格式
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
+                }  
+            },
+
+            cols: [[
+                {type: "checkbox", width: 150},
+                {field: 'id', width: 100, title: 'ID', sort: true},
+                {field: 'course_name', width: 150, title: '课程名称',
+                    templet:function(res){
+                        return res.course.name;
+                    }
+                },
+                {field: 'teacher_name', width: 150, title: '老师',
+                    templet:function(res){
+                        return res.teacher.name;
+                    }
+                },
+                {field: 'teacher_email', width: 150, title: '老师邮箱',
+                    templet:function(res){
+                        return res.teacher.email;
+                    }},
+                {field: 'hour', width: 100, title: '学时',
+                    templet:function(res){
+                        return res.course.classHour;
+                    }
+                },
+                {field: 'score', width: 100, title: '学分',
+                    templet:function(res){
+                        return res.course.score;
+                    }},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+
+            limits: [5,10, 15, 20, 25, 50, 100],
+            limit: 10,
+
+            page: true,
+            skin: 'line'
+        });
+
+    
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data; 
+            console.log(222);
+            console.log(data);
+            if(obj.event === 'delete') {
+                layer.confirm('真的删除行么', function (index) {
+                    
+                    //发送ajax请求
+                    $.ajax({
+                        url: realm_name + '/c2t/' + data.id,
+                        method: "DELETE",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        success:function(res){
+                            layer.alert(res.message);
+                        },
+                        error:function(res){
+                            layer.alert(res.message);
+                        }
+                    })
+
+                    obj.del();
+                });
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

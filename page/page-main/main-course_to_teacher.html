@@ -93,11 +93,27 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
-
+                
+                //表格展示所有课程和讲师信息
                 var index = layer.open({
-                    title: '编辑课程',
+                    title: '查看讲师',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['100%', '100%'],
+                    content: '../../page/page-edit/course-to-teacher.html',
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                //表格展示所有课程和讲师信息
+                var index = layer.open({
+                    title: '安排讲师',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
@@ -109,11 +125,6 @@
                     layer.full(index);
                 });
                 return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
             }
         });
 
