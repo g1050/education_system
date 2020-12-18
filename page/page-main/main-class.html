@@ -13,6 +13,26 @@
 
 <body>
     <div class="layuimini-container">
+        <!-- 信息检索 -->
+    <fieldset class="table-search-fieldset">
+        <legend>搜索信息</legend>
+        <div style="margin: 10px 10px 10px 10px">
+            <form class="layui-form layui-form-pane" action="">
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">班级名称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="name" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+    
         <div class="layuimini-main">
             <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
@@ -88,19 +108,22 @@
             // 监听搜索操作
             form.on('submit(data-search-btn)', function (data) {
                 var result = JSON.stringify(data.field);
-                layer.alert(result, {
-                    title: '最终的搜索信息'
-                });
+                // layer.alert(result, {
+                //     title: '最终的搜索信息'
+                // });
 
                 //执行搜索重载
                 table.reload('currentTableId', {
+                    url:realm_name + '/class/byname',
+                    method:'POST',
                     page: {
+                        //从第一页开始
                         curr: 1
                     }
                     , where: {
                         searchParams: result
                     }
-                }, 'data');
+                });
 
                 return false;
             });
@@ -113,10 +136,10 @@
                     var index = layer.open({
                         title: '添加班级',
                         type: 2,
-                        shade: 0.2,
-                        maxmin: true,
                         shadeClose: true,
-                        area: ['100%', '100%'],
+                        shade: 0.8,
+                        area: ['720px', '70%'],
+                        shadeClose: false,
                         content: '../../page/page-add/add-class.html',
                     });
                     $(window).on("resize", function () {
@@ -172,10 +195,10 @@
                     var index = layer.open({
                         title: '编辑用户',
                         type: 2,
-                        shade: 0.2,
-                        maxmin: true,
                         shadeClose: true,
-                        area: ['100%', '100%'],
+                        shade: 0.8,
+                        area: ['720px', '70%'],
+                        shadeClose: false,
                         content: '../../page/page-edit/edit-class.html',
                     });
                     $(window).on("resize", function () {

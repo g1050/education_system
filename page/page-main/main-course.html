@@ -82,7 +82,7 @@
 <script src="../../js/config.js"></script>
 <script>
     var data =1;
-    layui.use(['form', 'table'], function () {
+    layui.use(['form', 'table'], function (obj) {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
@@ -163,6 +163,17 @@
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
+                    
+                //遍历data获取Id数组
+                var strIds = "";
+                var nameList = [];
+                for(i = 0;i<data.length;i++){
+                    strIds += data[i].id.toString();
+                    if(i != data.length-1){
+                        strIds += "-";
+                    }
+                    nameList.push(data[i].name);
+                }
                 layer.alert(JSON.stringify(data));
             }
         });
@@ -173,7 +184,7 @@
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
-            var data = obj.data;
+            data = obj.data;
             if (obj.event === 'edit') {
 
                 var index = layer.open({
