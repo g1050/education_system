@@ -32,48 +32,16 @@
                     placeholder="请输入课程名" value="" class="layui-input">
                 <tip>填写修改的课程名称。</tip>
             </div>
+        </div>
             <div class="layui-form-item">
                 <label class="layui-form-label required">开设学院</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="college" id="college" lay-verify="name" lay-reqtext="请输入学院名" placeholder="请输入学院名"
-                        value="" class="layui-input">
+                    <select name="collegeId" id="college" lay-filter="p" value="">
+                        <!-- 自动填入 -->
+                    </select>
                 </div>
             </div>
-        <!-- </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required"></label>
-            <div class="layui-input-block">
-                <input type="radio" name="sex" id="sex" value="男" title="男" checked="">
-                <input type="radio" name="sex" id="sex" value="女" title="女">
-            </div>
-        </div> -->
-        <!-- <div class="layui-form-item">
-            <label class="layui-form-label required">手机</label>
-            <div class="layui-input-block">
-                <input type="phone" name="phone" id="username" lay-verify="phone" lay-reqtext="手机号码不能为空"
-                    placeholder="请输入手机号码" value="" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">密码</label>
-            <div class="layui-input-block">
-                <input type="password" name="password" id="password" lay-verify="pass" lay-reqtext="密码不能为空"
-                    placeholder="请输入密码" value="" class="layui-input">
-            </div>
-        </div> -->
-        <!-- <div class="layui-form-item">
-            <label class="layui-form-label">课程图片</label>
-            <div class="layui-input-block">
-                <div class="layui-upload">
-                    <button type="button" class="layui-btn" id="avatar_url" data-src="{$find.admin_logo}">上传图片</button>
-                    <div class="layui-upload-list">
-                        <img class="layui-upload-img" id="avatar_url" style="width: 100px;height: 100px;"
-                            src="{$find.admin_logo}">
-                        <p id="demoText"></p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+       
         <div class="layui-form-item">
             <label class="layui-form-label required">是否必修</label>
             <div class="layui-input-inline">
@@ -97,12 +65,7 @@
                     value="" class="layui-input">
             </div>
         </div>
-        <!-- <div class="layui-form-item">
-            <label class="layui-form-label">邮箱</label>
-            <div class="layui-input-block">
-                <input type="email" name="email" id="email" placeholder="请输入邮箱" value="" class="layui-input">
-            </div>
-        </div> -->
+       
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -110,32 +73,69 @@
             </div>
         </div>
     </div>
-    </div>
     <script src="../../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
     <script src="../../js/config.js"></script>
     <script>
-        layui.use(['form'], function () {
+        var data = 1;
+        layui.use(['form'], function (obj) {
             var form = layui.form,
                 layer = layui.layer,
                 $ = layui.$;
+            var data = parent.data;
+                $(function(){
+                    $("#id").val(data.id);
+                    $("#name").val(data.name);
+                    $("#collegeId").val(data.collegeId);
+                    $("#classHour").val(data.classHour);
+                    $("#score").val(data.score);
+                    $("required").val(data.required);
+                    form.render('select');
+                })
 
+               ///获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all/', function (res) {
+                var $college = $('#college');
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    if(value.id == data.collegeId){
+                        $college.append("<option value=" + value.id + " selected = 'selected'>" + value.name);
+                    }else{
+                        $college.append("<option value=" + value.id + ">" + value.name);
+                    }
+                    
+                });
+                //刷新select
+                form.render('select', null);
+            })
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 var index = layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 }, function () {
-
-                    // 关闭弹出层
-                    layer.close(index);
-
-                    var iframeIndex = parent.layer.getFrameIndex(window.name);
-                    parent.layer.close(iframeIndex);
+                //提交数据
+                 $.ajax({
+                        url: realm_name + "/course",
+                        method: "PUT",
+                        //发送json
+                        contentType: "application/json;charset=UTF-8",
+                        data: JSON.stringify(data.field),
+                        success: function (res) {
+                            layer.alert(res.message, function () {
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            })
+                        },
+                        error: function (res) {
+                            layer.alert(res.message, function () {
+                                window.parent.location.reload();
+                                parent.layer.close(index);
+                            });
+                        }
+                    })
 
                 });
-
-                return false;
-            });
-
+        return false;
+        });
         });
     </script>
 </body>
