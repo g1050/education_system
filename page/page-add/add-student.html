@@ -58,9 +58,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label required">学院</label>
             <div class="layui-input-inline">
-                <select name="collegeId" id="collegeId" lay-filter="p" value="">
-                    <option value="1">计算机学院</option>
-                    <option value="2">理学院</option>
+                <select name="collegeId" id="college" lay-filter="p" value="">
                 </select>
             </div>
         </div>
@@ -105,9 +103,20 @@
             let form = layui.form;
             let upload = layui.upload;
             let laydate = layui.laydate;
-            let $ = layui.jquery;
+            let $ = layui.$;
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all', function (res) {
+                var $college = $('#college');
+                //遍历数组
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
 
-            function child(obj) {
+            })
+           function child(obj) {
                 console.log(obj);
             }
             //监听提交
