@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
+<script>
+    var data = 1;
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+            data = parent.data;
+
+        table.render({
+            elem: '#currentTableId',
+            url: realm_name + '/c2s/student/byc2t/' + data.id,
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
+                }  
+            },
+
+
+            cols: [[
+                {field: 'id', width: 200, title: '八位学号', sort: true,
+                    templet:function(d){
+                        return d.student.id;
+                    }
+                },
+                {field: 'name', width: 200, title: '姓名',templet:function(d){
+                        return d.student.name;
+                    }},
+                {field: 'phone', width: 200, title: '联系方式',templet:function(d){
+                        return d.student.phone;
+                    }},
+                {field: 'email', width: 200, title: '邮箱',templet:function(d){
+                        return d.student.email;
+                    }},
+                {field: 'sex', width: 200, title: '性别',templet:function(d){
+                    if(d.student.sex == true){
+                        return '男';
+                    }else return '女';
+                    }}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            skin: 'line'
+        });
+
+       
+
+    });
+</script>
+
+</body>
+</html>

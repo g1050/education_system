@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+    </div>
+</div>
+<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="../../js/config.js"></script>
+<script>
+    var data = 1;
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+            parent_data = parent.data;
+
+        table.render({
+            elem: '#currentTableId',
+            url: realm_name + '/c2s/student/byc2t/' + parent_data.id,
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+
+            parseData:function(res){
+                return{
+                    "code": res.code,
+                    "msg": res.message,
+                    "count": res.extend.pageInfo.total,
+                    "data": res.extend.pageInfo.list
+                }  
+            },
+
+
+            cols: [[
+                {field: 'id', width: 200, title: '八位学号', sort: true,
+                    templet:function(d){
+                        return d.student.id;
+                    }
+                },
+                {field: 'name', width: 200, title: '姓名',templet:function(d){
+                        return d.student.name;
+                    }},
+                {field: 'phone', width: 200, title: '联系方式',templet:function(d){
+                        return d.student.phone;
+                    }},
+                {field: 'email', width: 200, title: '邮箱',templet:function(d){
+                        return d.student.email;
+                    }},
+                {field: 'sex', width: 200, title: '性别',templet:function(d){
+                    if(d.student.sex == true){
+                        return '男';
+                    }else return '女';
+                    }},
+                {field: 'grade', width: 200, title: '成绩',edit:'text',
+                    templet:function(d){
+                        return d.grade;
+                    }
+                },
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            skin: 'line'
+        });
+
+        
+        table.on('edit(currentTableFilter)', function(obj){
+            var value = obj.value //得到修改后的值
+            ,data = obj.data //得到所在行所有键值
+            ,field = obj.field; //得到字段
+            //校验成绩为0-100分之间
+            if(value >= 0 && value <= 100){
+                var grade = new Object();
+                grade.courseId = parent_data.course.id;
+                grade.grade = value;
+                grade.studentId = data.student.id;
+                
+                //发送ajax请求,学生和Id和课程id和成绩
+                $.ajax({
+                        url: realm_name + '/grade',
+                        method: "POST",
+                        contentType:"application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        data: JSON.stringify(grade),
+                        headers: {
+                            "access_token":layui.data('table').token//此处放置请求到的用户token
+                        },
+                        success:function(res){
+                            layer.msg('[学生: '+ data.student.name +'] '  + '  成绩为：'+ value);
+                        },
+                        error:function(res){
+                            ;
+                        }
+                    })
+                
+                
+            }else{
+                layer.msg('成绩录入有误');
+            }
+            
+        });
+
+       
+
+    });
+</script>
+
+</body>
+</html>

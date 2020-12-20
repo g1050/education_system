@@ -16,8 +16,7 @@
         <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
         <script type="text/html" id="currentTableBar">
-            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">查看讲师</a>
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">安排讲师</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">查看选课学生</a>
         </script>
 
     </div>
@@ -26,14 +25,15 @@
 <script src="../../js/config.js"></script>
 <script>
     var data =1;
-    layui.use(['form', 'table'], function () {
+    layui.use(['form', 'table'], function (obj) {
         var $ = layui.jquery,
             form = layui.form,
             table = layui.table;
+            teacherId = 1;
 
         table.render({
             elem: '#currentTableId',
-            url: realm_name + '/course',
+            url: realm_name + '/c2t/course/byteacher',
             toolbar: '#toolbarDemo',
             defaultToolbar: ['filter', 'exports', 'print', {
                 title: '提示',
@@ -52,12 +52,37 @@
             
             cols: [[
                 {type: "checkbox", width: 150},
-                {field: 'id', width: 100, title: '课程编号', sort: true},
-                {field: 'name', width: 200, title: '课程名称'},
-                {field: 'collegeId',width: 180, title: '开设学院'},
-                {field: 'classHour', width: 100, title: '课时',},
-                {field: 'score', width: 90, title: '学分', sort: true},
-                {field: 'required', width: 160, title: '是否必修',templet: function(d){if(d.required == true){return '是'}else{return '否'}}},
+                {field: 'id', width: 110, title: '课程编号', sort: true},
+                {field: 'name', width: 150, title: '课程名称',
+                    templet:function(res){
+                        return res.course.name;
+                    }
+                },
+                {field: 'teacher',width: 180, title: '授课老师',
+                    templet:function(res){
+                            return res.teacher.name;
+                        }
+                },
+                {field: 'classHour', width: 100, title: '课时',
+                    templet:function(res){
+                            return res.course.classHour;
+                        }
+                },
+                {field: 'score', width: 90, title: '学分', sort: true,
+                    templet:function(res){
+                                return res.course.score;
+                            }
+                },
+                {field: 'required', width: 200, title: '选修/必修',
+                    templet: function(d){
+                        // alert(d.course.required);
+                        if(d.course.required == true){
+                            return'<span style="color:green">必修</span>' 
+                        }else{
+                            return'<span style="color:blue">选修</span>' 
+                        }
+                    }
+                },
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
@@ -65,67 +90,28 @@
             limit: 15,
             page: true,
             skin: 'line'
-        });
+        })
 
-        // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
-            });
-
-            //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
-
-            return false;
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        });
+        
 
         table.on('tool(currentTableFilter)', function (obj) {
             data = obj.data;
             if (obj.event === 'edit') {
-                
-                //表格展示所有课程和讲师信息
+
                 var index = layer.open({
-                    title: '查看讲师',
+                    title: '查看选课学生',
                     type: 2,
                     shade: 0.2,
                     maxmin:true,
                     shadeClose: true,
                     area: ['100%', '100%'],
-                    content: '../../page/page-edit/course-to-teacher.html',
+                    content: '../../page/page-teacher/all-student.html',
                 });
                 $(window).on("resize", function () {
                     layer.full(index);
                 });
                 return false;
-            } else if (obj.event === 'delete') {
-                //表格展示所有课程和讲师信息
-                var index = layer.open({
-                    title: '安排讲师',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../../page/page-edit/arrange-teacher.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-                return false;
-            }
+            } 
         });
 
     });

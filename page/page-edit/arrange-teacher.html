@@ -62,17 +62,50 @@
                 $("#id").val(data.id);
                 $("#name").val(data.name);
 
+                
+                
                 //ajax请求获得老师数据
+                $.ajax({
+                    method: 'GET',
+                    // url: realm_name+'/c2t/bycourse/'+data.id,
+                    url:realm_name + '/teacher/all',
+                    headers: {
+                            "access_token":layui.data('table').token//此处放置请求到的用户token
+                        },
+                    success:function(res){
+                        // var d = res.extend.pageInfo.list;
+                        // var teachers = new Array();
+                        // for(i in d){
+                        //     var teacher = new Object();
+                        //     teacher.name = d[i].teacher.name;
+                        //     teacher.value = d[i].teacher.id;
+                        //     teachers.push(teacher);
+                        //     // console.log(d[i].teacher.name);
+                        //     // console.log(d[i].teacher.id);
+                        // }
 
-                //渲染select
-                var demo2 = xmSelect.render({
-                    el: '#teacher', 
-                    data: [
-                        {name: '张三', value: 1},
-                        {name: '李四', value: 2},
-                        {name: '王五', value: 3},
-                    ]
+                        var d = res.extend.teacher;
+                        var teachers = new Array();
+                        for(i in d){
+                            var teacher = new Object();
+                            teacher.name = d[i].name;
+                            teacher.value = d[i].id;
+                            teachers.push(teacher);
+                            // console.log(d[i].teacher.name);
+                            // console.log(d[i].teacher.id);
+                        }
+
+                        //渲染select
+                        var demo2 = xmSelect.render({
+                            el: '#teacher', 
+                            data:teachers, 
+                        })
+                    },
+                    error:function(res){
+                        layer.message(res.message);
+                    }
                 })
+                
     
             //监听提交
             form.on('submit(saveBtn)', function (data) {
@@ -81,19 +114,19 @@
                 }, function () {
                     //发送ajax请求给后台
                     $.ajax({
-                        url: realm_name + '/c2t',
+                        url: realm_name + '/c2t/selectCourse',
                         method: "POST",
-                        contentType:"application/json;charset=UTF-8", //发送json
+                        // contentType:"application/json;charset=UTF-8", //发送json
                         // dataType: 'json',接受json
-                        data: JSON.stringify(data.field),
+                        data: data.field,
                         headers: {
                             "access_token":layui.data('table').token//此处放置请求到的用户token
                         },
                         success:function(res){
-                            layer.alert(res.message,function(){
-                                window.parent.location.reload();
-                                parent.layer.close(index);
-                            })
+                            // layer.alert(res.message,function(){
+                            //     window.parent.location.reload();
+                            //     parent.layer.close(index);
+                            // })
                         },
                         error:function(res){
                             layer.alert(res.message,function(){
@@ -102,7 +135,10 @@
                             });
                         }
                     })
-
+               
+                    window.parent.location.reload();
+                    parent.layer.close(index);
+                 
                     // 关闭弹出层
                     // layer.close(index);
 
