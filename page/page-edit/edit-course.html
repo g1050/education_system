@@ -33,29 +33,27 @@
                 <tip>填写修改的课程名称。</tip>
             </div>
         </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label required">开设学院</label>
-                <div class="layui-input-inline">
-                    <select name="collegeId" id="college" lay-filter="p" value="">
-                        <!-- 自动填入 -->
-                    </select>
-                </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label required">开设学院</label>
+            <div class="layui-input-inline">
+                <select name="collegeId" id="college" lay-filter="p" value="">
+                    <!-- 自动填入 -->
+                </select>
             </div>
-       
+        </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label required">是否必修</label>
-            <div class="layui-input-inline">
-                <select name="required" id="required" lay-filter="p" value="">
-                    <option value="1">是</option>
-                    <option value="2">否</option>
-                </select>
+            <div class="layui-input-block">
+                <input type="radio" name="required" id="required_Y" value="true" title="是">
+                <input type="radio" name="required" id="required_N" value="false" title="否">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">课时</label>
             <div class="layui-input-block">
-                <input type="text" name="classHour" id="classHour" lay-verify="name" lay-reqtext="课时不能为空" placeholder="请输入课时"
-                    value="" class="layui-input">
+                <input type="text" name="classHour" id="classHour" lay-verify="name" lay-reqtext="课时不能为空"
+                    placeholder="请输入课时" value="" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item">
@@ -65,7 +63,7 @@
                     value="" class="layui-input">
             </div>
         </div>
-       
+
 
         <div class="layui-form-item">
             <div class="layui-input-block">
@@ -82,27 +80,35 @@
                 layer = layui.layer,
                 $ = layui.$;
             var data = parent.data;
-                $(function(){
-                    $("#id").val(data.id);
-                    $("#name").val(data.name);
-                    $("#collegeId").val(data.collegeId);
-                    $("#classHour").val(data.classHour);
-                    $("#score").val(data.score);
-                    $("required").val(data.required);
-                    form.render('select');
-                })
+            $(function () {
+                $("#id").val(data.id);
+                $("#name").val(data.name);
+                $("#collegeId").val(data.collegeId);
+                $("#classHour").val(data.classHour);
+                $("#score").val(data.score);
+                if (data.required == true) {
+                    $("#required_Y").attr('checked', "");
+                    form.render();
+                    // console.log('Hello1');
+                } else {
+                    $("#required_N").attr('checked', "");
+                    form.render();
+                    // console.log('Hello2');
+                }
+                form.render('select');
+            })
 
-               ///获取学院信息填充到select
+            ///获取学院信息填充到select
             $.getJSON(realm_name + '/college/all/', function (res) {
                 var $college = $('#college');
-                $.each(res.extend.college,function(index,value){
+                $.each(res.extend.college, function (index, value) {
                     //console.log(value.name);
-                    if(value.id == data.collegeId){
+                    if (value.id == data.collegeId) {
                         $college.append("<option value=" + value.id + " selected = 'selected'>" + value.name);
-                    }else{
+                    } else {
                         $college.append("<option value=" + value.id + ">" + value.name);
                     }
-                    
+
                 });
                 //刷新select
                 form.render('select', null);
@@ -112,8 +118,8 @@
                 var index = layer.alert(JSON.stringify(data.field), {
                     title: '最终的提交信息'
                 }, function () {
-                //提交数据
-                 $.ajax({
+                    //提交数据
+                    $.ajax({
                         url: realm_name + "/course",
                         method: "PUT",
                         //发送json
@@ -134,8 +140,8 @@
                     })
 
                 });
-        return false;
-        });
+                return false;
+            });
         });
     </script>
 </body>
