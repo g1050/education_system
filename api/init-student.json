@@ -1,0 +1,37 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "page/welcome-1.html?t=1"
+  },
+  "logoInfo": {
+    "title": "幻萌教务",
+    "image": "images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+        {
+          "title": "我的课程",
+          "href": "page/page-student/main-mycourse.html",
+          "icon": "fa fa-paw",
+          "target": "_self"
+        },
+        {
+          "title": "我的成绩",
+          "href": "page/page-student/main-mygrade.html",
+          "icon": "fa fa-paw",
+          "target": "_self"
+        },
+        {
+          "title": "选课",
+          "href": "page/page-student/select-course.html",
+          "icon": "fa fa-paw",
+          "target": "_self"
+        }
+      ]
+  }]}
