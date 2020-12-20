@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title>layui</title>
@@ -9,207 +10,221 @@
     <link rel="stylesheet" href="../../lib/layui-v2.5.5/css/layui.css" media="all">
     <link rel="stylesheet" href="../../css/public.css" media="all">
 </head>
+
 <body>
-<div class="layuimini-container">
-    <div class="layuimini-main">
+    <div class="layuimini-container">
+        <div class="layuimini-main">
 
-        <fieldset class="table-search-fieldset">
-            <legend>搜索信息</legend>
-            <div style="margin: 10px 10px 10px 10px">
-                <form class="layui-form layui-form-pane" action="">
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">课程ID</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="id" autocomplete="off" class="layui-input">
+            <fieldset class="table-search-fieldset">
+                <legend>搜索信息</legend>
+                <div style="margin: 10px 10px 10px 10px">
+                    <form class="layui-form layui-form-pane" action="">
+                        <div class="layui-form-item">
+                            <div class="layui-inline">
+                                <label class="layui-form-label">课程名称</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="name" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <label class="layui-form-label">开设学院</label>
+                                <div class="layui-input-inline">
+                                    <input type="text" name="college" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                            <div class="layui-inline">
+                                <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                    lay-filter="college-search-btn"><i class="layui-icon"></i> 搜 索</button>
                             </div>
                         </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">课程名称</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="name" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">开设学院</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="collegeId" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">课时</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="classHour" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">学分</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="score" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <label class="layui-form-label">是否必修</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="required" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-inline">
-                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </fieldset>
+                    </form>
+                </div>
+            </fieldset>
 
-        <script type="text/html" id="toolbarDemo">
+            <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
                 <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 删除 </button>
             </div>
         </script>
 
-        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+            <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
-        <script type="text/html" id="currentTableBar">
+            <script type="text/html" id="currentTableBar">
             <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="edit">编辑</a>
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete">删除</a>
         </script>
 
+        </div>
     </div>
-</div>
-<script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../../js/config.js"></script>
-<script>
-    var data =1;
-    layui.use(['form', 'table'], function (obj) {
-        var $ = layui.jquery,
-            form = layui.form,
-            table = layui.table;
+    <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+    <script src="../../js/config.js"></script>
+    <script>
+        var data = 1;
+        layui.use(['form', 'table'], function (obj) {
+            var $ = layui.jquery,
+                form = layui.form,
+                table = layui.table;
 
-        table.render({
-            elem: '#currentTableId',
-            url: realm_name + '/course',
-            toolbar: '#toolbarDemo',
-            defaultToolbar: ['filter', 'exports', 'print', {
-                title: '提示',
-                layEvent: 'LAYTABLE_TIPS',
-                icon: 'layui-icon-tips'
-            }],
+            table.render({
+                elem: '#currentTableId',
+                url: realm_name + '/course',
+                toolbar: '#toolbarDemo',
+                defaultToolbar: ['filter', 'exports', 'print', {
+                    title: '提示',
+                    layEvent: 'LAYTABLE_TIPS',
+                    icon: 'layui-icon-tips'
+                }],
 
-            parseData:function(res){
-                return {
-                    "code":res.code,
-                    "msg":res.message,
-                    "count":res.extend.pageInfo.total,
-                    "data":res.extend.pageInfo.list
-                }
-            },
-            
-            cols: [[
-                {type: "checkbox", width: 150},
-                {field: 'id', width: 90, title: '课程编号', sort: true},
-                {field: 'name', width: 90, title: '课程名称'},
-                {field: 'collegeId',width: 180, title: '开设学院'},
-                {field: 'classHour', width: 180, title: '课时',},
-                {field: 'score', width: 90, title: '学分', sort: true},
-                {field: 'required', width: 160, title: '是否必修',templet: function(d){if(d.required == 'true'){return '是'}else{return '否'}}},
+                parseData: function (res) {
+                    return {
+                        "code": res.code,
+                        "msg": res.message,
+                        "count": res.extend.pageInfo.total,
+                        "data": res.extend.pageInfo.list
+                    }
+                },
 
-                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
-            ]],
-            limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
-            page: true,
-            skin: 'line'
-        });
+                cols: [[
+                    { type: "checkbox", width: 150 },
+                    { field: 'id', width: 90, title: '课程编号', sort: true },
+                    { field: 'name', width: 90, title: '课程名称' },
+                    {
+                        field: 'collegeId', width: 180, title: '开设学院',
+                        templet: function (d) {
+                            return d.college.name
+                        }
+                    },
+                    { field: 'classHour', width: 180, title: '课时', },
+                    { field: 'score', width: 90, title: '学分', sort: true },
+                    { field: 'required', width: 160, title: '是否必修', templet: function (d) { if (d.required == '1') { return '是' } else { return '否' } } },
 
-        // 监听搜索操作
-        form.on('submit(data-search-btn)', function (data) {
-            var result = JSON.stringify(data.field);
-            layer.alert(result, {
-                title: '最终的搜索信息'
+                    { title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center" }
+                ]],
+                limits: [5, 10, 15, 20, 25, 50, 100],
+                limit: 15,
+                page: true,
+                skin: 'line'
             });
 
-            //执行搜索重载
-            table.reload('currentTableId', {
-                page: {
-                    curr: 1
-                }
-                , where: {
-                    searchParams: result
-                }
-            }, 'data');
+            // 监听搜索操作
+            form.on('submit(college-search-btn)', function (data) {
+                var result = JSON.stringify(data.field);
+                // layer.alert(result, {
+                //     title: '最终的搜索信息'
+                // });
 
-            return false;
-        });
-
-        /**
-         * toolbar监听事件
-         */
-        table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {  // 监听添加操作
-                var index = layer.open({
-                    title: '添加课程',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../../page/page-add/add-course.html',
-                });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
-            } else if (obj.event === 'delete') {  // 监听删除操作
-                var checkStatus = table.checkStatus('currentTableId')
-                    , data = checkStatus.data;
-                    
-                //遍历data获取Id数组
-                var strIds = "";
-                var nameList = [];
-                for(i = 0;i<data.length;i++){
-                    strIds += data[i].id.toString();
-                    if(i != data.length-1){
-                        strIds += "-";
+                //执行搜索重载
+                table.reload('currentTableId', {
+                    url: realm_name + '/course/bymore',
+                    method: 'POST',
+                    page: {
+                        curr: 1
                     }
-                    nameList.push(data[i].name);
-                }
-                layer.alert(JSON.stringify(data));
-            }
-        });
-
-        //监听表格复选框选择
-        table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
-        });
-
-        table.on('tool(currentTableFilter)', function (obj) {
-            data = obj.data;
-            if (obj.event === 'edit') {
-
-                var index = layer.open({
-                    title: '编辑课程',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin:true,
-                    shadeClose: true,
-                    area: ['100%', '100%'],
-                    content: '../../page/page-edit/edit-course.html',
+                    , where: {
+                        searchParams: result
+                    }
                 });
-                $(window).on("resize", function () {
-                    layer.full(index);
-                });
+
                 return false;
-            } else if (obj.event === 'delete') {
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
-                    layer.close(index);
-                });
-            }
-        });
+            });
 
-    });
-</script>
+            /**
+             * toolbar监听事件
+             */
+            table.on('toolbar(currentTableFilter)', function (obj) {
+                if (obj.event === 'add') {  // 监听添加操作
+                    var index = layer.open({
+                        title: '添加课程',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../../page/page-add/add-course.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                } else if (obj.event === 'delete') {  // 监听删除操作
+                    var checkStatus = table.checkStatus('currentTableId')
+                        , data = checkStatus.data;
+
+                    //遍历data获取Id数组
+                    var strIds = "";
+                    var nameList = [];
+                    for (i = 0; i < data.length; i++) {
+                        strIds += data[i].id.toString();
+                        if (i != data.length - 1) {
+                            strIds += "-";
+                        }
+                        nameList.push(data[i].name);
+                    }
+                    console.log(strIds);
+                    layer.alert(JSON.stringify(nameList));
+
+                    //发送Id给后端
+                    $.ajax({
+                        url: realm_name + '/course/' + strIds,
+                        method: "DELETE",
+                        contentType: "application/json;charset=UTF-8", //发送json
+                        // dataType: 'json',接受json
+                        success: function (res) {
+                            layer.alert(res.message);
+                            //刷新table
+                            table.reload('currentTableId');
+                        },
+                        error: function (res) {
+                            layer.alert(res.message);
+                        }
+                    })
+                }
+            });
+
+            //监听表格复选框选择
+            table.on('checkbox(currentTableFilter)', function (obj) {
+                console.log(obj)
+            });
+
+            table.on('tool(currentTableFilter)', function (obj) {
+                data = obj.data;
+                if (obj.event === 'edit') {
+
+                    var index = layer.open({
+                        title: '编辑课程',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        area: ['100%', '100%'],
+                        content: '../../page/page-edit/edit-course.html',
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                    return false;
+                } else if (obj.event === 'delete') {
+                    layer.confirm('真的删除行么', function (index) {
+                        $.ajax({
+                            url: realm_name + '/course/' + data.id,
+                            method: "DELETE",
+                            contentType: "application/json;charset=UTF-8",
+
+                            success: function (res) {
+                                layer.alert(res.message);
+                            },
+                            error: function (res) {
+                                layer.alert(res.message);
+                            }
+                        })
+                        obj.del();
+                    });
+                }
+            });
+
+        });
+    </script>
 
 </body>
+
 </html>

@@ -14,26 +14,34 @@
 <body>
     <div class="layuimini-container">
         <!-- 信息检索 -->
-    <fieldset class="table-search-fieldset">
-        <legend>搜索信息</legend>
-        <div style="margin: 10px 10px 10px 10px">
-            <form class="layui-form layui-form-pane" action="">
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">班级名称</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="name" autocomplete="off" class="layui-input">
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">所属学院</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="college" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <label class="layui-form-label">班级名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
                     </div>
-                    <div class="layui-inline">
-                        <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </fieldset>
-    
+                </form>
+            </div>
+        </fieldset>
+
         <div class="layuimini-main">
+
             <script type="text/html" id="toolbarDemo">
             <div class="layui-btn-container">
                 <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="add"> 添加 </button>
@@ -41,6 +49,8 @@
             </div>
         </script>
 
+            <!-- 1.ajax请求获取数据
+        2.渲染在table里  -->
             <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
 
             <script type="text/html" id="currentTableBar">
@@ -62,6 +72,7 @@
             table.render({
                 elem: '#currentTableId',
                 //创建json
+                //url:'../../api/table-class.json',
                 url: realm_name + '/class',
                 toolbar: '#toolbarDemo',
                 defaultToolbar: ['filter', 'exports', 'print', {
@@ -81,19 +92,21 @@
 
                 cols: [[
                     { type: "checkbox", width: 150 },
-                    { field: 'id', width: 90, title: 'ID', sort: true },
-                    { field: 'collegeId', width: 90, title: '学院' ,
-                        templet:function(d){
-                            return d.college.name
+                    { field: 'id', width: 90, title: '班级ID', sort: true },
+                    {
+                        field: 'collegeId', width: 90, title: '所属学院',
+                        templet: function (d) {
+                            return d.college.name;
                         }
                     },
-                    { field: 'majorId', width: 90, title: '专业' ,
-                        templet:function(d){
-                            return d.major.name
+                    {
+                        field: 'majorId', width: 90, title: '所属专业',
+                        templet: function (data) {
+                            return data.major.name;
                         }
                     },
                     { field: 'studentNum', width: 180, title: '学生人数', sort: true },
-                    { field: 'name', width: 180, title: '名字' },
+                    { field: 'name', width: 180, title: '班级名称' },
                     { field: 'director', width: 90, title: '班长' },
                     { field: 'partySecretary', width: 160, title: '团支书' },
 
@@ -114,8 +127,8 @@
 
                 //执行搜索重载
                 table.reload('currentTableId', {
-                    url:realm_name + '/class/byname',
-                    method:'POST',
+                    url: realm_name + '/class/bymore',
+                    method: 'POST',
                     page: {
                         //从第一页开始
                         curr: 1
@@ -193,7 +206,7 @@
                 if (obj.event === 'edit') {
 
                     var index = layer.open({
-                        title: '编辑用户',
+                        title: '编辑班级',
                         type: 2,
                         shadeClose: true,
                         shade: 0.8,

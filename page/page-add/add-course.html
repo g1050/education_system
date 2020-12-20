@@ -26,29 +26,21 @@
             <div class="layui-input-block">
                 <input type="text" name="name" lay-verify="name" lay-reqtext="课程名不能为空" placeholder="请输入课程名"
                     value="" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label class="layui-form-label required">课程名称</label>
-            <div class="layui-input-block">
-                <input type="text" name="display_name" lay-verify="required" lay-reqtext="课程名称不能为空" placeholder="请输入课程名称"
-                    value="" class="layui-input">
-                <tip>填写课程名称。</tip>
+                    <tip>填写课程名称。</tip>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">是否必修</label>
             <div class="layui-input-block">
-                <input type="radio" name="" value="是" title="是" checked="">
-                <input type="radio" name="" value="否" title="否">
+                <input type="radio" name="required" id="required_Y" value="true" title="是" checked="">
+                <input type="radio" name="required" id="required_N" value="false" title="否">
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label required">开设学院</label>
             <div class="layui-input-inline">
-                <select name="collegeId" id="collegeiD" lay-filter="p" value="">
-                    <option value="1">计算机学院</option>
-                    <option value="2">理学院</option>
+                <select name="collegeId" id="college" lay-filter="p" value="">
+                    <!-- 自动获取 -->
                 </select>
             </div>
         </div>
@@ -79,7 +71,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">学分</label>
             <div class="layui-input-block">
-                <input type="email" name="email" placeholder="请输入学分" value="" class="layui-input">
+                <input type="email" name="score" placeholder="请输入学分" value="" class="layui-input">
             </div>
         </div>
 
@@ -118,11 +110,26 @@
             let laydate = layui.laydate;
             let $ = layui.$;
 
+            //获取学院信息填充到select
+            $.getJSON(realm_name + '/college/all', function (res) {
+                var $college = $('#college');
+                //遍历数组
+                $.each(res.extend.college,function(index,value){
+                    //console.log(value.name);
+                    $college.append("<option value=" + value.id + ">" + value.name)
+                });
+                //刷新select
+                form.render('select',null);
+
+            })
+            function child(obj) {
+                console.log(obj);
+            }
             //监听提交
             form.on('submit(saveBtn)', function (data) {
                 console.log(data.field);
                 var index = layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息111'
+                    title: '最终的提交信息'
                 }, function () {
 
                     // 关闭弹出层

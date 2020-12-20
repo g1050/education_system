@@ -20,6 +20,12 @@
                 <form class="layui-form layui-form-pane" action="">
                     <div class="layui-form-item">
                         <div class="layui-inline">
+                            <label class="layui-form-label">社团名称</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-inline">
                             <label class="layui-form-label">所属学院</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="college" autocomplete="off" class="layui-input">
@@ -113,7 +119,7 @@
 
                 //执行搜索重载
                 table.reload('currentTableId', {
-                    url: realm_name + '/club/bycollege',
+                    url: realm_name + '/club/bymore',
                     method: 'POST',
                     page: {
                         curr: 1 //重新从第 1 页开始

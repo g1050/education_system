@@ -25,11 +25,35 @@
                             </div>
                         </div>
 
+                        <!-- <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div> -->
+                        <div class="layui-inline">
+                            <label class="layui-form-label">教师姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
                         <div class="layui-inline">
                             <button type="submit" class="layui-btn layui-btn-primary" lay-submit
                                 lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
                         </div>
                     </div>
+                    <!-- <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">教师姓名</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="name" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary" lay-submit
+                                lay-filter="name-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div> -->
                 </form>
             </div>
         </fieldset>
@@ -112,7 +136,7 @@
 
                 //执行搜索重载
                 table.reload('currentTableId', {
-                    url: realm_name + '/teacher/bycollege',
+                    url: realm_name + '/teacher/bymore',
                     method: 'POST',
                     page: {
                         curr: 1
@@ -124,6 +148,27 @@
 
                 return false;
             });
+
+            // form.on('submit(name-search-btn)', function (data) {
+            //     var result = JSON.stringify(data.field);
+            //     // layer.alert(result, {
+            //     //     title: '最终的搜索信息'
+            //     // });
+
+            //     //执行搜索重载
+            //     table.reload('currentTableId', {
+            //         url: realm_name + '/teacher/byname',
+            //         method: 'POST',
+            //         page: {
+            //             curr: 1
+            //         }
+            //         , where: {
+            //             searchParams: result
+            //         }
+            //     });
+
+            //     return false;
+            // });
 
             /**
              * toolbar监听事件
