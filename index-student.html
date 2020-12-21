@@ -159,7 +159,9 @@
 
         $('.login-out').on("click", function () {
             layer.msg('退出登录成功', function () {
-                window.location = 'page/login.html';
+                layui.data('table', null);
+                layui.data('role',null);
+                window.location = 'page/login-student.html';
             });
         });
     });

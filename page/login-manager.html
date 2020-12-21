@@ -90,6 +90,22 @@
         //     window.location.href = 'https://api.weibo.com/oauth2/authorize?client_id=' + client_id +
         //              '&redirect_uri=' + redirect_uri + '&response_type=code';
         // })
+        $.ajax({
+            url:realm_name + '/hc',
+            method:'GET',
+            success:function(res){
+                if(res.code == 0 
+                && layui.data('role').role == 'manager'
+                ){
+                    layer.msg('登录成功', function () {
+                            window.location = '../index-manager.html';
+                            });
+                }else{
+                    layui.data('table',null);
+                    layui.data('role',null);
+                }
+            }
+        });
 
         // 进行登录操作
         form.on('submit(login)', function (data) {
@@ -111,15 +127,24 @@
                 success:function(res){
                     if(res.code == "0"){
                         //token写入local storage
-                        layui.data('table', {
-                            key: "token",
-                            value: res.extend.token
-                        });
-                        console.log('取出的token为'+layui.data('table').token);
-
-                        layer.msg('登录成功', function () {
-                            window.location = '../index.html';
-                        });
+                        
+                        //console.log('取出的token为'+layui.data('table').token);
+                        if(res.extend.role == "manager"){
+                            layer.msg('登录成功', function () {
+                            window.location = '../index-manager.html';
+                            });
+                            layui.data('role', {
+                                key: "role",
+                                value: res.extend.role
+                            });
+                            layui.data('table', {
+                                key: "token",
+                                value: res.extend.token
+                            });
+                        }else{
+                            layer.msg('账号或密码错误');
+                        }
+                        
                     }else{
                         layer.msg('账号或密码错误');
                     }

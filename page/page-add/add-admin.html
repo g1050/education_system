@@ -76,18 +76,26 @@
             let upload = layui.upload;
             let laydate = layui.laydate;
             let $ = layui.$;
-
+            // $.ajaxSettings.beforeSend = function(xhr,request){
+            //     xhr.setRequestHeader('access_token',layui.data('table').token);
+            // }
             //获取学院信息填充到select
-            $.getJSON(realm_name + '/college/all', function (res) {
-                var $college = $('#college');
-                //遍历数组
-                $.each(res.extend.college,function(index,value){
-                    //console.log(value.name);
-                    $college.append("<option value=" + value.id + ">" + value.name)
-                });
-                //刷新select
-                form.render('select',null);
-
+            $.ajax({
+                        url: realm_name + '/college/all',
+                        method: "GET",
+                        success:function(res){
+                            var $college = $('#college');
+                            //遍历数组
+                            $.each(res.extend.college,function(index,value){
+                                //console.log(value.name);
+                                $college.append("<option value=" + value.id + ">" + value.name)
+                            });
+                            //刷新select
+                            form.render('select',null);
+                        },
+                        error:function(res){
+                            ;
+                        }
             })
 
             //获取表单数据然后提交
