@@ -54,7 +54,11 @@
                 {type: "checkbox", width: 150},
                 {field: 'id', width: 100, title: '课程编号', sort: true},
                 {field: 'name', width: 200, title: '课程名称'},
-                {field: 'collegeId',width: 180, title: '开设学院'},
+                {field: 'collegeId',width: 180, title: '开设学院',
+                    templet: function (d) {
+                            return d.college.name
+                        }
+                },
                 {field: 'classHour', width: 100, title: '课时',},
                 {field: 'score', width: 90, title: '学分', sort: true},
                 {field: 'required', width: 160, title: '是否必修',templet: function(d){if(d.required == true){return '是'}else{return '否'}}},
