@@ -23,7 +23,6 @@
 
 
 **后端**   
-
 ```git clone https://github.com/g1050/education_system_java.git```  
 
 **前端** 
@@ -75,6 +74,9 @@
 - 选修课选课
   
 # 效果展示
-
+![登录界面](https://github.com/g1050/education_system/blob/master/images/README/login.png)
+![管理员界面](https://github.com/g1050/education_system/blob/master/images/README/manager.png)
+![学生界面](https://github.com/g1050/education_system/blob/master/images/README/student.png)
+![教师界面](https://github.com/g1050/education_system/blob/master/images/README/teacher.png)
 
 > QQ交流群:```1056651547```
