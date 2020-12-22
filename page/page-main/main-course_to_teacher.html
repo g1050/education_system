@@ -61,7 +61,16 @@
                 },
                 {field: 'classHour', width: 100, title: '课时',},
                 {field: 'score', width: 90, title: '学分', sort: true},
-                {field: 'required', width: 160, title: '是否必修',templet: function(d){if(d.required == true){return '是'}else{return '否'}}},
+                {field: 'required', width: 200, title: '选修/必修',
+                    templet: function(d){
+                        // alert(d.course.required);
+                        if(d.course.required == true){
+                            return'<span style="color:green">必修</span>' 
+                        }else{
+                            return'<span style="color:blue">选修</span>' 
+                        }
+                    }
+                },
 
                 {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
             ]],
