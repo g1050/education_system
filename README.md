@@ -22,7 +22,7 @@
 ### 下载
 
 
-**后端**   
+**后端**
 ```git clone https://github.com/g1050/education_system_java.git```  
 
 **前端** 
